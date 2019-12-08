@@ -208,7 +208,7 @@ require("./index.scss");
 
 var $ = {};
 $.root = document.querySelector('.app');
-},{"normalize.scss/normalize.scss":"../../../node_modules/normalize.scss/normalize.scss","./index.scss":"index.scss"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../../node_modules/normalize.scss/normalize.scss","./index.scss":"index.scss"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -236,7 +236,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36585" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42009" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -412,5 +412,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.ts"], null)
-//# sourceMappingURL=/keyboard-handwriting.66449392.js.map
+},{}]},{},["../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.ts"], null)
+//# sourceMappingURL=/keyboard-handwriting.77de5100.js.map
