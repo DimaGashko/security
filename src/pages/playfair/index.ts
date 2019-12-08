@@ -1,6 +1,6 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
-import { encode } from './algorithms/playfair';
+import { encode } from './algorithms/playfair/encode';
 
 const ALPHABET = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
 const DELIMITER = "'";

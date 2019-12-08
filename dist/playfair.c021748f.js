@@ -195,7 +195,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"playfair/algorithms/playfair.ts":[function(require,module,exports) {
+},{"_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"playfair/algorithms/playfair/encode.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -233,18 +233,21 @@ function encode(code, msg, alphabet, delimiter, gridWidth) {
   }
 
   var grid = createGrid(code, alphabet, gridWidth);
-  var preparedMsg = prepareMsg(msg, delimiter);
-  return {
-    grid: grid,
-    preparedMsg: preparedMsg
-  };
+  return prepareMsg(msg, delimiter).map(function (pair) {
+    return encodePair(pair, grid);
+  }).map(function (_a) {
+    var a = _a[0],
+        b = _a[1];
+    return a + b;
+  }).join('');
 }
 
-exports.encode = encode;
+exports.default = encode;
 
-function decode(code, msg) {}
-
-exports.decode = decode;
+function encodePair(_a, grid) {
+  var a = _a[0],
+      b = _a[1];
+}
 
 function prepareMsg(msg, delimiter) {
   return chunk(msg.toLowerCase().replace(/\s/g, '').split(''), 2).map(function (_a) {
@@ -264,12 +267,6 @@ function prepareAlphabet(code, alphabet) {
     return !codeSet.has(ch);
   }));
 }
-
-function chunk(arr, size) {
-  return new Array(Math.ceil(arr.length / size)).fill(0).map(function (_, i) {
-    return arr.slice(i * size, (i + 1) * size);
-  });
-}
 },{}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -281,15 +278,15 @@ require("normalize.scss/normalize.scss");
 
 require("./index.scss");
 
-var playfair_1 = require("./algorithms/playfair");
+var encode_1 = require("./algorithms/playfair/encode");
 
 var ALPHABET = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
 var DELIMITER = "'";
-console.log(playfair_1.encode('cluster', 'meet me tomorrow'));
+console.log(encode_1.encode('cluster', 'meet me tomorrow'));
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair":"playfair/algorithms/playfair.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/encode":"playfair/algorithms/playfair/encode.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
