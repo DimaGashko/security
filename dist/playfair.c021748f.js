@@ -209,7 +209,7 @@ function chunk(arr, size) {
 }
 
 exports.default = chunk;
-},{}],"playfair/algorithms/playfair/Grid.ts":[function(require,module,exports) {
+},{}],"playfair/algorithms/playfair/PlayfairGrid.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -238,14 +238,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _utils_1 = __importDefault(require("./_utils"));
 
-var Grid =
+var PlayfairGrid =
 /** @class */
 function () {
-  function Grid(code, alphabet, delimiter, width) {
-    if (width === void 0) {
-      width = 5;
-    }
-
+  function PlayfairGrid(code, alphabet, delimiter, width) {
     this.code = code;
     this.alphabet = alphabet;
     this.delimiter = delimiter;
@@ -254,23 +250,30 @@ function () {
     this.create();
   }
 
-  Grid.createEnGrid = function (code) {
-    return new Grid(code, 'abcdefghiklmnopqrstuvwxyz'.split(''), 'x', 5);
+  PlayfairGrid.createEnGrid = function (code) {
+    var alphabet = 'abcdefghiklmnopqrstuvwxyz'.split('');
+    return new PlayfairGrid(code, alphabet, 'x', 5);
   };
 
-  Grid.createUaGrid = function (code) {
-    return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
+  PlayfairGrid.createUaGrid = function (code) {
+    var alphabet = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
+    return new PlayfairGrid(code, alphabet, "'", 5);
   };
 
-  Grid.prototype.encodePair = function (pair) {
+  PlayfairGrid.prototype.encodePair = function (pair) {
     return this.processPair(pair, 'encode');
   };
 
-  Grid.prototype.decodePaid = function (pair) {
+  PlayfairGrid.prototype.decodePair = function (pair) {
     return this.processPair(pair, 'decode');
   };
 
-  Grid.prototype.processPair = function (_a, mode) {
+  PlayfairGrid.prototype.create = function () {
+    this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
+    this.gridMap = this.createGridMap(this.grid);
+  };
+
+  PlayfairGrid.prototype.processPair = function (_a, mode) {
     var a = _a[0],
         b = _a[1];
     var shift = mode === 'encode' ? 1 : -1;
@@ -295,18 +298,13 @@ function () {
     return [this.get(ai, bj), this.get(bi, aj)];
   };
 
-  Grid.prototype.get = function (i, j) {
+  PlayfairGrid.prototype.get = function (i, j) {
     if (i < 0) i = this.grid.length - 1;else if (i === this.grid.length) i = 0;
     if (j < 0) j = this.width - 1;else if (j === this.width) j = 0;
     return this.grid[i][j];
   };
 
-  Grid.prototype.create = function () {
-    this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
-    this.gridMap = this.createGridMap(this.grid);
-  };
-
-  Grid.prototype.createGridMap = function (grid) {
+  PlayfairGrid.prototype.createGridMap = function (grid) {
     return grid.reduce(function (map, row, i) {
       row.forEach(function (ch, j) {
         return map.set(ch, {
@@ -318,17 +316,17 @@ function () {
     }, new Map());
   };
 
-  Grid.prototype.prepareAlphabet = function (code, alphabet) {
+  PlayfairGrid.prototype.prepareAlphabet = function (code, alphabet) {
     var codeSet = new Set(code);
     return __spreadArrays(code.split(''), alphabet.filter(function (ch) {
       return !codeSet.has(ch);
     }));
   };
 
-  return Grid;
+  return PlayfairGrid;
 }();
 
-exports.default = Grid;
+exports.default = PlayfairGrid;
 },{"./_utils":"playfair/algorithms/playfair/_utils.ts"}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -346,15 +344,16 @@ require("normalize.scss/normalize.scss");
 
 require("./index.scss");
 
-var Grid_1 = __importDefault(require("./algorithms/playfair/Grid"));
+var PlayfairGrid_1 = __importDefault(require("./algorithms/playfair/PlayfairGrid"));
 
-var grid = Grid_1.default.createEnGrid('cluster');
-console.log(grid); //console.log(encode('cluster', 'meet me tomorrow'));
+var grid = PlayfairGrid_1.default.createEnGrid('cluster');
+console.log(grid);
+window.playfairGrid = grid; //console.log(encode('cluster', 'meet me tomorrow'));
 
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/Grid":"playfair/algorithms/playfair/Grid.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/PlayfairGrid":"playfair/algorithms/playfair/PlayfairGrid.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

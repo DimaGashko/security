@@ -1,10 +1,11 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
-import Grid from './algorithms/playfair/Grid';
+import PlayfairGrid from './algorithms/playfair/PlayfairGrid';
 
-const grid = Grid.createEnGrid('cluster');
+const grid = PlayfairGrid.createEnGrid('cluster');
 console.log(grid);
 
+window.playfairGrid = grid;
 
 //console.log(encode('cluster', 'meet me tomorrow'));
 

@@ -2,7 +2,7 @@ import chunk from "./_utils";
 
 type GridMap = Map<string, { i: number, j: number }>
 
-export default class Grid {
+export default class PlayfairGrid {
    private grid: string[][];
    private gridMap: GridMap = new Map();
 
@@ -10,25 +10,32 @@ export default class Grid {
       private code: string,
       private alphabet: string[],
       private delimiter: string,
-      private width = 5
+      private width: number,
    ) {
       this.create();
    }
 
    public static createEnGrid(code: string) {
-      return new Grid(code, 'abcdefghiklmnopqrstuvwxyz'.split(''), 'x', 5);
+      const alphabet = 'abcdefghiklmnopqrstuvwxyz'.split('');
+      return new PlayfairGrid(code, alphabet, 'x', 5);
    }
 
    public static createUaGrid(code: string) {
-      return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
+      const alphabet = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
+      return new PlayfairGrid(code, alphabet, "'", 5);
    }
 
    public encodePair(pair: string[]): string[] {
       return this.processPair(pair, 'encode');      
    }
 
-   public decodePaid(pair: string[]): string[] {
+   public decodePair(pair: string[]): string[] {
       return this.processPair(pair, 'decode');
+   }
+
+   private create() {
+      this.grid = chunk(this.prepareAlphabet(this.code, this.alphabet), this.width);
+      this.gridMap = this.createGridMap(this.grid);
    }
 
    private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
@@ -66,11 +73,6 @@ export default class Grid {
       else if (j === this.width) j = 0;
 
       return this.grid[i][j];
-   }
-
-   private create() {
-      this.grid = chunk(this.prepareAlphabet(this.code, this.alphabet), this.width);
-      this.gridMap = this.createGridMap(this.grid);
    }
 
    private createGridMap(grid: string[][]): GridMap {
