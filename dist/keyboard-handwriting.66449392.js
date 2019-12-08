@@ -227,6 +227,7 @@ var $ = {};
 var typingParams = null;
 var curMode = null;
 var curText = '';
+var keyPressedTimes = [];
 var typingTime = {
   start: 0,
   finish: 0
@@ -241,6 +242,9 @@ function initEvents() {
   $.test.addEventListener('click', function () {
     startTesting();
   });
+  $.input.addEventListener('input', function (event) {
+    keyPressedTimes.push(Date.now());
+  });
   $.input.addEventListener('keydown', function (event) {
     if (event.keyCode !== 13 || !curMode) return;
     event.preventDefault();
@@ -249,6 +253,8 @@ function initEvents() {
 }
 
 function startRecording() {
+  var confirmMsd = 'Old recorded data will be removed. Start recording?';
+  if (typingParams && !confirm(confirmMsd)) return;
   beforeStart();
   curMode = 'record';
 }
@@ -266,7 +272,7 @@ function startTesting() {
 function beforeStart() {
   setControlsDisable(true);
   updateText();
-  typingTime.start = Date.now();
+  keyPressedTimes.length = 0;
   $.input.disabled = false;
   $.input.value = '';
   $.input.focus();
@@ -281,8 +287,13 @@ function finishRecording() {
     return;
   }
 
+  if (newTypingParams.speed > 2000) {
+    alert("Don't cheat!");
+    startRecording();
+    return;
+  }
+
   typingParams = newTypingParams;
-  console.log(typingParams);
   printTypingParams();
   $.input.disabled = true;
 }
@@ -295,14 +306,21 @@ function finishTesting() {
   var errorEps = Math.abs(prev.error * TRUST_EPS);
   var speedDiff = Math.abs(prev.speed - cur.speed);
   var errorDiff = Math.abs(prev.error - cur.error);
-  var speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2);
-  var errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2);
+  var speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2) || 0;
+  var errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2) || 0;
   var pass = speedDiff <= speedEps && errorDiff <= errorEps;
   var msg = "Recorded speed: " + formatSpeed(prev.speed) + " ch/min, errors: " + formatErrors(prev.error) + "%\n" + ("Current speed: " + formatSpeed(cur.speed) + " ch/min, errors: " + formatErrors(cur.error) + "%\n") + ("Speed diff: " + speedDiffPercent + "%, Errors diff: " + errorDiffPercent + "%\n\n") + ("" + (pass ? "Passed. You're Welcome!" : 'Failed!'));
+
+  if (cur.speed > 2000) {
+    alert("Don't cheat!");
+    return;
+  }
+
   alert(msg);
 }
 
 function beforeFinish() {
+  typingTime.start = keyPressedTimes[0];
   typingTime.finish = Date.now();
   curMode = null;
   $.input.disabled = true;

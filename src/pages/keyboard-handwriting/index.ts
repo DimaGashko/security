@@ -16,6 +16,8 @@ let typingParams: TypingParams = null;
 let curMode: 'record' | 'test' = null;
 let curText = '';
 
+let keyPressedTimes: number[] = [];
+
 let typingTime = {
    start: 0,
    finish: 0,
@@ -33,6 +35,10 @@ function initEvents() {
       startTesting();
    });
 
+   $.input.addEventListener('input', (event) => {
+      keyPressedTimes.push(Date.now());
+   });
+
    $.input.addEventListener('keydown', (event) => {
       if (event.keyCode !== 13 || !curMode) return;
       event.preventDefault();
@@ -43,6 +49,9 @@ function initEvents() {
 }
 
 function startRecording() {
+   const confirmMsd = 'Old recorded data will be removed. Start recording?';
+   if (typingParams && !confirm(confirmMsd)) return;
+
    beforeStart();
    curMode = 'record';
 }
@@ -63,7 +72,7 @@ function beforeStart() {
    setControlsDisable(true);
    updateText();
 
-   typingTime.start = Date.now();
+   keyPressedTimes.length = 0;
 
    (<HTMLTextAreaElement>$.input).disabled = false;
    (<HTMLTextAreaElement>$.input).value = '';
@@ -80,8 +89,13 @@ function finishRecording() {
       return;
    }
 
+   if (newTypingParams.speed > 2000) {
+      alert("Don't cheat!")
+      startRecording();
+      return;
+   }
+
    typingParams = newTypingParams;
-   console.log(typingParams);
 
    printTypingParams();
 
@@ -100,8 +114,8 @@ function finishTesting() {
    const speedDiff = Math.abs(prev.speed - cur.speed);
    const errorDiff = Math.abs(prev.error - cur.error);
 
-   const speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2);
-   const errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2);
+   const speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2) || 0;
+   const errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2) || 0;
 
    const pass = speedDiff <= speedEps && errorDiff <= errorEps;
 
@@ -109,11 +123,17 @@ function finishTesting() {
       `Current speed: ${formatSpeed(cur.speed)} ch/min, errors: ${formatErrors(cur.error)}%\n` +
       `Speed diff: ${speedDiffPercent}%, Errors diff: ${errorDiffPercent}%\n\n` +
       `${(pass) ? "Passed. You're Welcome!" : 'Failed!'}`;
+   
+   if (cur.speed > 2000) {
+      alert("Don't cheat!")
+      return;
+   }
 
    alert(msg);
 }
 
 function beforeFinish() {
+   typingTime.start = keyPressedTimes[0];
    typingTime.finish = Date.now();
    curMode = null;
 
