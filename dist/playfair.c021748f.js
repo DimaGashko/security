@@ -317,6 +317,7 @@ function () {
   };
 
   PlayfairGrid.prototype.prepareAlphabet = function (code, alphabet) {
+    code = code.toLowerCase();
     var codeSet = new Set(code);
     return __spreadArrays(code.split(''), alphabet.filter(function (ch) {
       return !codeSet.has(ch);
@@ -327,6 +328,44 @@ function () {
 }();
 
 exports.default = PlayfairGrid;
+},{"./_utils":"playfair/algorithms/playfair/_utils.ts"}],"playfair/algorithms/playfair/playfair.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _utils_1 = __importDefault(require("./_utils"));
+
+function encode(msg, grid) {
+  return prepareMsg(msg).map(function (p) {
+    return grid.encodePair(p);
+  }).flatMap(function (s) {
+    return s;
+  }).join('');
+}
+
+exports.encode = encode;
+
+function decode(msg, grid) {
+  return prepareMsg(msg).map(function (p) {
+    return grid.decodePair(p);
+  }).flatMap(function (s) {
+    return s;
+  }).join('');
+}
+
+exports.decode = decode;
+
+function prepareMsg(msg) {
+  return _utils_1.default(msg.toLowerCase().replace(/\s/g, '').split(''), 2);
+}
 },{"./_utils":"playfair/algorithms/playfair/_utils.ts"}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -346,14 +385,16 @@ require("./index.scss");
 
 var PlayfairGrid_1 = __importDefault(require("./algorithms/playfair/PlayfairGrid"));
 
-var grid = PlayfairGrid_1.default.createEnGrid('cluster');
-console.log(grid);
-window.PlayfairGrid = PlayfairGrid_1.default; //console.log(encode('cluster', 'meet me tomorrow'));
+var playfair_1 = require("./algorithms/playfair/playfair");
 
+var grid = PlayfairGrid_1.default.createEnGrid('cluster');
+window.PlayfairGrid = PlayfairGrid_1.default;
+window.encodePlayfair = playfair_1.encode;
+window.decodePlayfair = playfair_1.decode;
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/PlayfairGrid":"playfair/algorithms/playfair/PlayfairGrid.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/PlayfairGrid":"playfair/algorithms/playfair/PlayfairGrid.ts","./algorithms/playfair/playfair":"playfair/algorithms/playfair/playfair.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

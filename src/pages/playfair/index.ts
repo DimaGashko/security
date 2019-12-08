@@ -1,13 +1,13 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
 import PlayfairGrid from './algorithms/playfair/PlayfairGrid';
+import { encode, decode } from './algorithms/playfair/playfair';
 
 const grid = PlayfairGrid.createEnGrid('cluster');
-console.log(grid);
 
 window.PlayfairGrid = PlayfairGrid;
-
-//console.log(encode('cluster', 'meet me tomorrow'));
+window.encodePlayfair = encode;
+window.decodePlayfair = decode;
 
 initEvents();
 

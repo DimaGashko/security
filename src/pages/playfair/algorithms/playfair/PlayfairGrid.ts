@@ -83,6 +83,8 @@ export default class PlayfairGrid {
    }
 
    private prepareAlphabet(code: string, alphabet: string[]): string[] {
+      code = code.toLowerCase();
+      
       const codeSet = new Set(code);
       return [...code.split(''), ...alphabet.filter(ch => !codeSet.has(ch))]
    }
