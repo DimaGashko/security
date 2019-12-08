@@ -114,14 +114,14 @@ function finishTesting() {
    const speedDiff = Math.abs(prev.speed - cur.speed);
    const errorDiff = Math.abs(prev.error - cur.error);
 
-   const speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2) || 0;
-   const errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2) || 0;
+   const speedDiffPercent = Math.min(+(speedDiff / prev.speed * 100).toFixed(2) || 0, 100);
+   const errorsDiffPercent = Math.min(+(errorDiff / prev.error * 100).toFixed(2) || 0, 100);
 
    const pass = speedDiff <= speedEps && errorDiff <= errorEps;
 
    const msg = `Recorded speed: ${formatSpeed(prev.speed)} ch/min, errors: ${formatErrors(prev.error)}%\n` +
       `Current speed: ${formatSpeed(cur.speed)} ch/min, errors: ${formatErrors(cur.error)}%\n` +
-      `Speed diff: ${speedDiffPercent}%, Errors diff: ${errorDiffPercent}%\n\n` +
+      `Speed diff: ${speedDiffPercent}%, Errors diff: ${errorsDiffPercent}%\n\n` +
       `${(pass) ? "Passed. You're Welcome!" : 'Failed!'}`;
    
    if (cur.speed > 2000) {
@@ -159,11 +159,13 @@ function calcTypingParams(): TypingParams {
 }
 
 function calcRealTextLen(text) {
-   return text.length;
+   return text.split('').reduce((len, char) => {
+      return len + (/[A-Z-А-ЯЄЇІ!"№;%:?*\(\),]/.test(char)) ? 2 : 1;
+   }, 0);
 }
 
 function updateText() {
-   const newIndex = Math.round(Math.random() * texts.length);
+   const newIndex = Math.round(Math.random() * (texts.length - 1));
    curText = texts[newIndex].trim();
 
    (<HTMLTextAreaElement>$.text).value = curText;

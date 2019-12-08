@@ -306,10 +306,10 @@ function finishTesting() {
   var errorEps = Math.abs(prev.error * TRUST_EPS);
   var speedDiff = Math.abs(prev.speed - cur.speed);
   var errorDiff = Math.abs(prev.error - cur.error);
-  var speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2) || 0;
-  var errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2) || 0;
+  var speedDiffPercent = Math.min(+(speedDiff / prev.speed * 100).toFixed(2) || 0, 100);
+  var errorsDiffPercent = Math.min(+(errorDiff / prev.error * 100).toFixed(2) || 0, 100);
   var pass = speedDiff <= speedEps && errorDiff <= errorEps;
-  var msg = "Recorded speed: " + formatSpeed(prev.speed) + " ch/min, errors: " + formatErrors(prev.error) + "%\n" + ("Current speed: " + formatSpeed(cur.speed) + " ch/min, errors: " + formatErrors(cur.error) + "%\n") + ("Speed diff: " + speedDiffPercent + "%, Errors diff: " + errorDiffPercent + "%\n\n") + ("" + (pass ? "Passed. You're Welcome!" : 'Failed!'));
+  var msg = "Recorded speed: " + formatSpeed(prev.speed) + " ch/min, errors: " + formatErrors(prev.error) + "%\n" + ("Current speed: " + formatSpeed(cur.speed) + " ch/min, errors: " + formatErrors(cur.error) + "%\n") + ("Speed diff: " + speedDiffPercent + "%, Errors diff: " + errorsDiffPercent + "%\n\n") + ("" + (pass ? "Passed. You're Welcome!" : 'Failed!'));
 
   if (cur.speed > 2000) {
     alert("Don't cheat!");
@@ -344,11 +344,13 @@ function calcTypingParams() {
 }
 
 function calcRealTextLen(text) {
-  return text.length;
+  return text.split('').reduce(function (len, char) {
+    return len + /[A-Z-А-ЯЄЇІ!"№;%:?*\(\),]/.test(char) ? 2 : 1;
+  }, 0);
 }
 
 function updateText() {
-  var newIndex = Math.round(Math.random() * texts_1.default.length);
+  var newIndex = Math.round(Math.random() * (texts_1.default.length - 1));
   curText = texts_1.default[newIndex].trim();
   $.text.value = curText;
 }
