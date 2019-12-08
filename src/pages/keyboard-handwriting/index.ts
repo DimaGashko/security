@@ -74,7 +74,7 @@ function finishRecording() {
    beforeFinish();
 
    const newTypingParams = calcTypingParams();
-   
+
    if (newTypingParams.error > MAX_RECORD_ERR) {
       alert('Too many errors. Your typing params are not saved.');
       return;
@@ -92,19 +92,23 @@ function finishTesting() {
    beforeFinish();
 
    const prev = typingParams;
-
-   const speedEps = prev.speed * TRUST_EPS;
-   const errorEps = prev.error * TRUST_EPS;
-
    const cur = calcTypingParams();
+
+   const speedEps = Math.abs(prev.speed * TRUST_EPS);
+   const errorEps = Math.abs(prev.error * TRUST_EPS);
 
    const speedDiff = Math.abs(prev.speed - cur.speed);
    const errorDiff = Math.abs(prev.error - cur.error);
+
+   const speedDiffPercent = +(speedDiff / prev.speed * 100).toFixed(2);
+   const errorDiffPercent = +(errorDiff / prev.error * 100).toFixed(2);
+
    const pass = speedDiff <= speedEps && errorDiff <= errorEps;
 
-   const msg = `Recorded speed: ${prev.speed}, errors: ${prev.error}\n` +
-      `Current speed: ${cur.speed}, errors: ${cur.error}\n\n` +
-      `${(pass) ? 'Failed!' : "Passed. You're Welcome!"}`;
+   const msg = `Recorded speed: ${formatSpeed(prev.speed)} ch/min, errors: ${formatErrors(prev.error)}%\n` +
+      `Current speed: ${formatSpeed(cur.speed)} ch/min, errors: ${formatErrors(cur.error)}%\n` +
+      `Speed diff: ${speedDiffPercent}%, Errors diff: ${errorDiffPercent}%\n\n` +
+      `${(pass) ? "Passed. You're Welcome!" : 'Failed!'}`;
 
    alert(msg);
 }
@@ -146,8 +150,16 @@ function updateText() {
 }
 
 function printTypingParams() {
-   $.speed.innerHTML = Math.round(typingParams.speed) + '';
-   $.errors.innerHTML = Math.round(typingParams.error * 10000) / 100 + '';
+   $.speed.innerHTML = formatSpeed(typingParams.speed);
+   $.errors.innerHTML = formatErrors(typingParams.error);
+}
+
+function formatSpeed(val) {
+   return Math.round(val) + '';
+}
+
+function formatErrors(val) {
+   return +(val * 100).toFixed(2) + '';
 }
 
 function setControlsDisable(val) {
