@@ -348,7 +348,7 @@ var PlayfairGrid_1 = __importDefault(require("./algorithms/playfair/PlayfairGrid
 
 var grid = PlayfairGrid_1.default.createEnGrid('cluster');
 console.log(grid);
-window.playfairGrid = grid; //console.log(encode('cluster', 'meet me tomorrow'));
+window.PlayfairGrid = PlayfairGrid_1.default; //console.log(encode('cluster', 'meet me tomorrow'));
 
 initEvents();
 
