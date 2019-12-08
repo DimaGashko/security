@@ -1,11 +1,12 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
-import { encode } from './algorithms/playfair/encode';
+import Grid from './algorithms/playfair/Grid';
 
-const ALPHABET = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
-const DELIMITER = "'";
+const grid = Grid.createEnGrid('cluster');
+console.log(grid);
 
-console.log(encode('cluster', 'meet me tomorrow'));
+
+//console.log(encode('cluster', 'meet me tomorrow'));
 
 initEvents();
 

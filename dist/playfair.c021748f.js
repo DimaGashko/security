@@ -195,7 +195,21 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"playfair/algorithms/playfair/encode.ts":[function(require,module,exports) {
+},{"_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"playfair/algorithms/playfair/_utils.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function chunk(arr, size) {
+  return new Array(Math.ceil(arr.length / size)).fill(0).map(function (_, i) {
+    return arr.slice(i * size, (i + 1) * size);
+  });
+}
+
+exports.default = chunk;
+},{}],"playfair/algorithms/playfair/Grid.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -212,63 +226,78 @@ var __spreadArrays = this && this.__spreadArrays || function () {
   return r;
 };
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var ALPHABET = 'abcdefghiklmnopqrstuvwxyz'.split('');
-var DELIMITER = 'x';
-var GRID_WIDTH = 5;
 
-function encode(code, msg, alphabet, delimiter, gridWidth) {
-  if (alphabet === void 0) {
-    alphabet = ALPHABET;
+var _utils_1 = __importDefault(require("./_utils"));
+
+var Grid =
+/** @class */
+function () {
+  function Grid(code, alphabet, delimiter, width) {
+    if (width === void 0) {
+      width = 5;
+    }
+
+    this.code = code;
+    this.alphabet = alphabet;
+    this.delimiter = delimiter;
+    this.width = width;
+    this.gridMap = new Map();
+    this.create();
   }
 
-  if (delimiter === void 0) {
-    delimiter = DELIMITER;
-  }
+  Grid.createEnGrid = function (code) {
+    return new Grid(code, 'abcdefghiklmnopqrstuvwxyz'.split(''), 'x', 5);
+  };
 
-  if (gridWidth === void 0) {
-    gridWidth = GRID_WIDTH;
-  }
+  Grid.createUaGrid = function (code) {
+    return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
+  };
 
-  var grid = createGrid(code, alphabet, gridWidth);
-  return prepareMsg(msg, delimiter).map(function (pair) {
-    return encodePair(pair, grid);
-  }).map(function (_a) {
-    var a = _a[0],
-        b = _a[1];
-    return a + b;
-  }).join('');
-}
+  Grid.prototype.create = function () {
+    this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
+    this.gridMap = this.createGridMap(this.grid);
+  };
 
-exports.default = encode;
+  Grid.prototype.createGridMap = function (grid) {
+    return grid.reduce(function (map, row, i) {
+      row.forEach(function (ch, j) {
+        return map.set(ch, {
+          i: i,
+          j: j
+        });
+      });
+      return map;
+    }, new Map());
+  };
 
-function encodePair(_a, grid) {
-  var a = _a[0],
-      b = _a[1];
-}
+  Grid.prototype.prepareAlphabet = function (code, alphabet) {
+    var codeSet = new Set(code);
+    return __spreadArrays(code.split(''), alphabet.filter(function (ch) {
+      return !codeSet.has(ch);
+    }));
+  };
 
-function prepareMsg(msg, delimiter) {
-  return chunk(msg.toLowerCase().replace(/\s/g, '').split(''), 2).map(function (_a) {
-    var a = _a[0],
-        b = _a[1];
-    return [a, a === b || !b ? delimiter : b];
-  });
-}
+  return Grid;
+}();
 
-function createGrid(code, alphabet, width) {
-  return chunk(prepareAlphabet(code, alphabet), width);
-}
-
-function prepareAlphabet(code, alphabet) {
-  var codeSet = new Set(code);
-  return __spreadArrays(code.split(''), alphabet.filter(function (ch) {
-    return !codeSet.has(ch);
-  }));
-}
-},{}],"playfair/index.ts":[function(require,module,exports) {
+exports.default = Grid;
+},{"./_utils":"playfair/algorithms/playfair/_utils.ts"}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -278,15 +307,15 @@ require("normalize.scss/normalize.scss");
 
 require("./index.scss");
 
-var encode_1 = require("./algorithms/playfair/encode");
+var Grid_1 = __importDefault(require("./algorithms/playfair/Grid"));
 
-var ALPHABET = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
-var DELIMITER = "'";
-console.log(encode_1.encode('cluster', 'meet me tomorrow'));
+var grid = Grid_1.default.createEnGrid('cluster');
+console.log(grid); //console.log(encode('cluster', 'meet me tomorrow'));
+
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/encode":"playfair/algorithms/playfair/encode.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/Grid":"playfair/algorithms/playfair/Grid.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
