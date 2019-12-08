@@ -23,19 +23,51 @@ export default class Grid {
       return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
    }
 
-   create() {
+   public encodePair([a, b]: string[]): string[] {
+      const aPos = this.gridMap.get(a);
+      const bPos = this.gridMap.get(b);
+
+      if (aPos.i === bPos.i) {
+         return [
+            this.get(aPos.i, aPos.j + 1),
+            this.get(bPos.i, bPos.j + 1),
+         ];
+      }
+
+      if (aPos.j === bPos.j) {
+         return [
+            this.get(aPos.i + 1, aPos.j),
+            this.get(bPos.i + 1, bPos.j),
+         ];
+      }
+
+      return [ 
+         this.get(aPos.i, bPos.j),
+         this.get(bPos.i, aPos.j),
+      ];
+   }
+
+   public decodePaid([a, b]: string[]): string[] {
+
+   }
+
+   private get(i: number, j: number): string {
+
+   }
+
+   private create() {
       this.grid = chunk(this.prepareAlphabet(this.code, this.alphabet), this.width);
       this.gridMap = this.createGridMap(this.grid);
    }
 
-   createGridMap(grid: string[][]): GridMap {
+   private createGridMap(grid: string[][]): GridMap {
       return grid.reduce((map, row, i) => { 
          row.forEach((ch, j) => map.set(ch, {i, j}));
          return map;
       }, new Map());
    }
 
-   prepareAlphabet(code: string, alphabet: string[]): string[] {
+   private prepareAlphabet(code: string, alphabet: string[]): string[] {
       const codeSet = new Set(code);
       return [...code.split(''), ...alphabet.filter(ch => !codeSet.has(ch))]
    }

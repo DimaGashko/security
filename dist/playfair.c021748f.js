@@ -262,6 +262,30 @@ function () {
     return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
   };
 
+  Grid.prototype.encodePair = function (_a) {
+    var a = _a[0],
+        b = _a[1];
+    var aPos = this.gridMap.get(a);
+    var bPos = this.gridMap.get(b);
+
+    if (aPos.i === bPos.i) {
+      return [this.get(aPos.i, aPos.j + 1), this.get(bPos.i, bPos.j + 1)];
+    }
+
+    if (aPos.j === bPos.j) {
+      return [this.get(aPos.i + 1, aPos.j), this.get(bPos.i + 1, bPos.j)];
+    }
+
+    return [this.get(aPos.i, bPos.j), this.get(bPos.i, aPos.j)];
+  };
+
+  Grid.prototype.decodePaid = function (_a) {
+    var a = _a[0],
+        b = _a[1];
+  };
+
+  Grid.prototype.get = function (i, j) {};
+
   Grid.prototype.create = function () {
     this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
     this.gridMap = this.createGridMap(this.grid);
