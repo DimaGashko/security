@@ -455,8 +455,10 @@ h1 {
   margin: 0 auto;
 }
 
-.controls {
+.top {
   margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .record {

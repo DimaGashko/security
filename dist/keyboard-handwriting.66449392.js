@@ -195,7 +195,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.ts":[function(require,module,exports) {
+},{"_css_loader":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"keyboard-handwriting/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -207,7 +207,13 @@ require("normalize.scss/normalize.scss");
 require("./index.scss");
 
 var $ = {};
-$.root = document.querySelector('.app');
+$.root = document.querySelector('.app-main');
+$.record = $.root.querySelector('.record');
+$.test = $.root.querySelector('.test');
+$.speed = $.root.querySelector('.speed');
+$.accuracy = $.root.querySelector('.accuracy');
+$.text = $.root.querySelector('.text');
+$.input = $.root.querySelector('.input');
 },{"normalize.scss/normalize.scss":"../../../node_modules/normalize.scss/normalize.scss","./index.scss":"keyboard-handwriting/index.scss"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -412,5 +418,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.ts"], null)
+},{}]},{},["../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","keyboard-handwriting/index.ts"], null)
 //# sourceMappingURL=/keyboard-handwriting.66449392.js.map
