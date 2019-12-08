@@ -4,8 +4,8 @@
    "private": true,
    "sideEffects": false,
    "scripts": {
-      "start": "parcel src/index.pug",
-      "build": "parcel build src/index.pug --public-url ."
+      "kh-start": "parcel src/keyboard-handwriting/index.pug",
+      "kh-build": "parcel build src/keyboard-handwriting/index.pug --public-url ."
    },
    "dependencies": {
       "throttle-debounce": "^2.1.0"
