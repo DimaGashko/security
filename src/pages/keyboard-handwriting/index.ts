@@ -26,11 +26,13 @@ function initEvents() {
    });
 
    $.input.addEventListener('input', () => {
+      if (!curMode) return;
 
+      
    });
 
-   $.input.addEventListener('keyup', (event) => {
-      if (event.keyCode !== 13) return;
+   $.input.addEventListener('keydown', (event) => {
+      if (event.keyCode !== 13 || !curMode) return;
       event.preventDefault();
 
       if (curMode === 'record') finishRecording();
@@ -45,7 +47,9 @@ function startRecording() {
 
 function startTesting() {
    if (!recordedData) {
-      alert('You have to Record you keyboard handwriting first');
+      alert('You have to Record you keyboard handwriting. ' +
+         'Click on the Record button first.');
+      
       return;
    }
 
@@ -54,13 +58,18 @@ function startTesting() {
 }
 
 function beforeStart() {
-   $.input.focus();
    setControlsDisable(true);
    updateText();
+
+   (<HTMLTextAreaElement>$.input).disabled = false;
+   (<HTMLTextAreaElement>$.input).value = '';
+   $.input.focus();
 }
 
 function finishRecording() {
    afterFinish();
+
+   (<HTMLTextAreaElement>$.input).disabled = true;
 }
 
 function finishTesting() {
