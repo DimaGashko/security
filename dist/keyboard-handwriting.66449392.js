@@ -235,21 +235,46 @@ function initEvents() {
   $.test.addEventListener('click', function () {
     startTesting();
   });
+  $.input.addEventListener('input', function () {});
+  $.input.addEventListener('keyup', function (event) {
+    if (event.keyCode !== 13) return;
+    event.preventDefault();
+    if (curMode === 'record') finishRecording();else if (curMode === 'test') finishTesting();
+  });
 }
 
 function startRecording() {
-  setControlsDisable(true);
-  setControlsDisable(false);
+  beforeStart();
+  curMode = 'record';
 }
 
 function startTesting() {
   if (!recordedData) {
-    alert('You have to record you keyboard handwriting first');
+    alert('You have to Record you keyboard handwriting first');
     return;
   }
 
+  beforeStart();
+  curMode = 'test';
+}
+
+function beforeStart() {
+  $.input.focus();
   setControlsDisable(true);
+  updateText();
+}
+
+function finishRecording() {
+  afterFinish();
+}
+
+function finishTesting() {
+  afterFinish();
+}
+
+function afterFinish() {
   setControlsDisable(false);
+  curMode = null;
 }
 
 function setControlsDisable(val) {
@@ -257,9 +282,10 @@ function setControlsDisable(val) {
   $.test.disabled = val;
 }
 
-function getRandomText() {
-  var index = Math.round(Math.random() * texts_1.default.length);
-  return texts_1.default[index];
+function updateText() {
+  var newIndex = Math.round(Math.random() * texts_1.default.length);
+  curText = texts_1.default[newIndex];
+  $.text.value = curText;
 }
 
 function getElements() {

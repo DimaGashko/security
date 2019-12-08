@@ -9,8 +9,9 @@ interface RecordedData {
 
 const $: { [type: string]: HTMLElement } = {};
 const recordedData: RecordedData = null;
-const curMode: 'record' | 'test' = null;
-const curText = '';
+
+let curMode: 'record' | 'test' = null;
+let curText = '';
 
 getElements();
 initEvents();
@@ -22,26 +23,53 @@ function initEvents() {
 
    $.test.addEventListener('click', () => {
       startTesting();
-   })
+   });
+
+   $.input.addEventListener('input', () => {
+
+   });
+
+   $.input.addEventListener('keyup', (event) => {
+      if (event.keyCode !== 13) return;
+      event.preventDefault();
+
+      if (curMode === 'record') finishRecording();
+      else if (curMode === 'test') finishTesting();
+   });
 }
 
 function startRecording() {
-   setControlsDisable(true);
-
-   setControlsDisable(false);
+   beforeStart();
+   curMode = 'record';
 }
 
 function startTesting() {
    if (!recordedData) {
-      alert('You have to record you keyboard handwriting first');
+      alert('You have to Record you keyboard handwriting first');
       return;
    }
 
+   beforeStart();
+   curMode = 'test';
+}
+
+function beforeStart() {
+   $.input.focus();
    setControlsDisable(true);
+   updateText();
+}
 
-   
+function finishRecording() {
+   afterFinish();
+}
 
+function finishTesting() {
+   afterFinish();
+}
+
+function afterFinish() {
    setControlsDisable(false);
+   curMode = null;
 }
 
 function setControlsDisable(val) {
@@ -49,9 +77,11 @@ function setControlsDisable(val) {
    (<HTMLButtonElement>$.test).disabled = val;
 }
 
-function getRandomText() {
-   const index = Math.round(Math.random() * texts.length);
-   return texts[index];
+function updateText() {
+   const newIndex = Math.round(Math.random() * texts.length);
+   curText = texts[newIndex];
+
+   (<HTMLTextAreaElement>$.text).value = curText;
 }
 
 function getElements() {
