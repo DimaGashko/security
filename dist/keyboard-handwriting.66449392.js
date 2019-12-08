@@ -345,7 +345,7 @@ function calcTypingParams() {
 
 function calcRealTextLen(text) {
   return text.split('').reduce(function (len, char) {
-    return len + /[A-Z-А-ЯЄЇІ!"№;%:?*\(\),]/.test(char) ? 2 : 1;
+    return len + (/[A-Z-А-ЯЄЇІ!"№;%:?*\(\),]/.test(char) ? 2 : 1);
   }, 0);
 }
 
