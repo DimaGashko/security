@@ -1,3 +1,34 @@
 @import '../../styles/breakpoints';
 @import '../../styles/base';
 @import '../../styles/header';
+@import '../../styles/main';
+
+.app-main {
+   max-width: 960px;
+   margin: 0 auto;
+}
+
+.controls {
+   margin-top: 12px;
+}
+
+.record {
+   margin-right: 8px;
+}
+
+.area-label {
+   display: block;
+   margin-top: 24px;
+}
+
+.text, 
+.input {
+   resize: vertical;
+   margin-top: 8px;
+
+   width: 100%;
+
+   height: 30vh;
+   min-height: 150px;
+   max-height: 800px;
+}
