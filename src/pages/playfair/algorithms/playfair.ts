@@ -4,15 +4,18 @@ const GRID_WIDTH = 5;
 
 export function encode(code: string, msg: string, alphabet = ALPHABET, delimiter = DELIMITER, gridWidth = GRID_WIDTH) {
    const grid = createGrid(code, alphabet, gridWidth);
-   return grid;
+   const preparedMsg = prepareMsg(msg, delimiter);
+   return { grid, preparedMsg };
 }
 
 export function decode(code: string, msg: string) {
 
-}
+} 
 
-function prepareMsg(msg: string) {
-   return msg.toLowerCase().replace('\s', '')
+function prepareMsg(msg: string, delimiter: string): string[][] {
+   return chunk(msg.toLowerCase().replace(/\s/g, '').split(''), 2).map(([a, b]) => {
+      return [a, (a === b || !b) ? delimiter : b];
+   });
 }
 
 function createGrid(code: string, alphabet: string[], width: number) {

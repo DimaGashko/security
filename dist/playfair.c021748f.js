@@ -233,7 +233,11 @@ function encode(code, msg, alphabet, delimiter, gridWidth) {
   }
 
   var grid = createGrid(code, alphabet, gridWidth);
-  return grid;
+  var preparedMsg = prepareMsg(msg, delimiter);
+  return {
+    grid: grid,
+    preparedMsg: preparedMsg
+  };
 }
 
 exports.encode = encode;
@@ -242,8 +246,12 @@ function decode(code, msg) {}
 
 exports.decode = decode;
 
-function prepareMsg(msg) {
-  return msg.toLowerCase().replace('\s', '');
+function prepareMsg(msg, delimiter) {
+  return chunk(msg.toLowerCase().replace(/\s/g, '').split(''), 2).map(function (_a) {
+    var a = _a[0],
+        b = _a[1];
+    return [a, a === b || !b ? delimiter : b];
+  });
 }
 
 function createGrid(code, alphabet, width) {
@@ -309,7 +317,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40535" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36631" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
