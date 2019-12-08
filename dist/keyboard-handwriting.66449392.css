@@ -470,10 +470,6 @@ h1 {
   margin-top: 24px;
 }
 
-.text {
-  user-select: none;
-}
-
 .text,
 .input {
   resize: vertical;

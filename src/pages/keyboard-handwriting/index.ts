@@ -91,21 +91,22 @@ function finishRecording() {
 function finishTesting() {
    beforeFinish();
 
-   const speedEps = typingParams.speed * TRUST_EPS;
-   const errorEps = typingParams.error * TRUST_EPS;
+   const prev = typingParams;
 
-   const newTypingParams = calcTypingParams();
-   console.log(newTypingParams);
+   const speedEps = prev.speed * TRUST_EPS;
+   const errorEps = prev.error * TRUST_EPS;
 
-   const speedDiff = Math.abs(typingParams.speed - newTypingParams.speed);
-   const errorDiff = Math.abs(typingParams.error - newTypingParams.error);
+   const cur = calcTypingParams();
 
-   if (speedDiff > speedEps || errorDiff > errorEps) {
-      alert('Failed!');
-      return;
-   }
+   const speedDiff = Math.abs(prev.speed - cur.speed);
+   const errorDiff = Math.abs(prev.error - cur.error);
+   const pass = speedDiff <= speedEps && errorDiff <= errorEps;
 
-   alert("You're Welcome!");
+   const msg = `Recorded speed: ${prev.speed}, errors: ${prev.error}\n` +
+      `Current speed: ${cur.speed}, errors: ${cur.error}\n\n` +
+      `${(pass) ? 'Failed!' : "Passed. You're Welcome!"}`;
+
+   alert(msg);
 }
 
 function beforeFinish() {
