@@ -33,7 +33,8 @@ export default class Grid {
 
    private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
       const shift = (mode === 'encode') ? 1 : -1;
-
+      
+      if (b === a || !b) b = this.delimiter;
       const { i: ai, j: aj } = this.gridMap.get(a);
       const { i: bi, j: bj } = this.gridMap.get(b);
 
@@ -58,7 +59,13 @@ export default class Grid {
    }
 
    private get(i: number, j: number): string {
+      if (i < 0) i = this.grid.length - 1;
+      else if (i === this.grid.length) i = 0;
 
+      if (j < 0) j = this.width - 1;
+      else if (j === this.width) j = 0;
+
+      return this.grid[i][j];
    }
 
    private create() {

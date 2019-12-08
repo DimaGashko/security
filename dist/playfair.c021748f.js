@@ -274,6 +274,7 @@ function () {
     var a = _a[0],
         b = _a[1];
     var shift = mode === 'encode' ? 1 : -1;
+    if (b === a || !b) b = this.delimiter;
 
     var _b = this.gridMap.get(a),
         ai = _b.i,
@@ -294,7 +295,11 @@ function () {
     return [this.get(ai, bj), this.get(bi, aj)];
   };
 
-  Grid.prototype.get = function (i, j) {};
+  Grid.prototype.get = function (i, j) {
+    if (i < 0) i = this.grid.length - 1;else if (i === this.grid.length) i = 0;
+    if (j < 0) j = this.width - 1;else if (j === this.width) j = 0;
+    return this.grid[i][j];
+  };
 
   Grid.prototype.create = function () {
     this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
