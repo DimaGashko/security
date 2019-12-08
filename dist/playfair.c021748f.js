@@ -251,8 +251,8 @@ function () {
   }
 
   PlayfairGrid.createEnGrid = function (code) {
-    var alphabet = 'abcdefghiklmnopqrstuvwxyz'.split('');
-    return new PlayfairGrid(code, alphabet, 'x', 5);
+    var alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
+    return new PlayfairGrid(code, alphabet, "'", 5);
   };
 
   PlayfairGrid.createUaGrid = function (code) {

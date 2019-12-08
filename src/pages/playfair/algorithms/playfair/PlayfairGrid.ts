@@ -16,8 +16,8 @@ export default class PlayfairGrid {
    }
 
    public static createEnGrid(code: string) {
-      const alphabet = 'abcdefghiklmnopqrstuvwxyz'.split('');
-      return new PlayfairGrid(code, alphabet, 'x', 5);
+      const alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
+      return new PlayfairGrid(code, alphabet, "'", 5);
    }
 
    public static createUaGrid(code: string) {
@@ -84,7 +84,7 @@ export default class PlayfairGrid {
 
    private prepareAlphabet(code: string, alphabet: string[]): string[] {
       code = code.toLowerCase();
-      
+
       const codeSet = new Set(code);
       return [...code.split(''), ...alphabet.filter(ch => !codeSet.has(ch))]
    }
