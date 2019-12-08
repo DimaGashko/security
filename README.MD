@@ -2,7 +2,9 @@
 
 Some software security demos
 
-Check it out: https://dimagashko.github.io/security
+Check it out:
+
+- [Keyboard Handwriting](https://dimagashko.github.io/security/keyboard-handwriting/)
 
 ## Langs & Techs
 
