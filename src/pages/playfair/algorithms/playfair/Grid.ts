@@ -11,7 +11,7 @@ export default class Grid {
       private alphabet: string[],
       private delimiter: string,
       private width = 5
-   ) { 
+   ) {
       this.create();
    }
 
@@ -23,32 +23,38 @@ export default class Grid {
       return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
    }
 
-   public encodePair([a, b]: string[]): string[] {
-      const aPos = this.gridMap.get(a);
-      const bPos = this.gridMap.get(b);
-
-      if (aPos.i === bPos.i) {
-         return [
-            this.get(aPos.i, aPos.j + 1),
-            this.get(bPos.i, bPos.j + 1),
-         ];
-      }
-
-      if (aPos.j === bPos.j) {
-         return [
-            this.get(aPos.i + 1, aPos.j),
-            this.get(bPos.i + 1, bPos.j),
-         ];
-      }
-
-      return [ 
-         this.get(aPos.i, bPos.j),
-         this.get(bPos.i, aPos.j),
-      ];
+   public encodePair(pair: string[]): string[] {
+      return this.processPair(pair, 'encode');      
    }
 
-   public decodePaid([a, b]: string[]): string[] {
+   public decodePaid(pair: string[]): string[] {
+      return this.processPair(pair, 'decode');
+   }
 
+   private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
+      const shift = (mode === 'encode') ? 1 : -1;
+
+      const { i: ai, j: aj } = this.gridMap.get(a);
+      const { i: bi, j: bj } = this.gridMap.get(b);
+
+      if (ai === bi) {
+         return [
+            this.get(ai, aj + shift),
+            this.get(bi, bj + shift),
+         ];
+      }
+
+      if (aj === bj) {
+         return [
+            this.get(ai + shift, aj),
+            this.get(bi + shift, bj),
+         ];
+      }
+
+      return [
+         this.get(ai, bj),
+         this.get(bi, aj),
+      ];
    }
 
    private get(i: number, j: number): string {
@@ -61,8 +67,8 @@ export default class Grid {
    }
 
    private createGridMap(grid: string[][]): GridMap {
-      return grid.reduce((map, row, i) => { 
-         row.forEach((ch, j) => map.set(ch, {i, j}));
+      return grid.reduce((map, row, i) => {
+         row.forEach((ch, j) => map.set(ch, { i, j }));
          return map;
       }, new Map());
    }

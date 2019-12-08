@@ -262,26 +262,36 @@ function () {
     return new Grid(code, "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split(''), "'", 5);
   };
 
-  Grid.prototype.encodePair = function (_a) {
-    var a = _a[0],
-        b = _a[1];
-    var aPos = this.gridMap.get(a);
-    var bPos = this.gridMap.get(b);
-
-    if (aPos.i === bPos.i) {
-      return [this.get(aPos.i, aPos.j + 1), this.get(bPos.i, bPos.j + 1)];
-    }
-
-    if (aPos.j === bPos.j) {
-      return [this.get(aPos.i + 1, aPos.j), this.get(bPos.i + 1, bPos.j)];
-    }
-
-    return [this.get(aPos.i, bPos.j), this.get(bPos.i, aPos.j)];
+  Grid.prototype.encodePair = function (pair) {
+    return this.processPair(pair, 'encode');
   };
 
-  Grid.prototype.decodePaid = function (_a) {
+  Grid.prototype.decodePaid = function (pair) {
+    return this.processPair(pair, 'decode');
+  };
+
+  Grid.prototype.processPair = function (_a, mode) {
     var a = _a[0],
         b = _a[1];
+    var shift = mode === 'encode' ? 1 : -1;
+
+    var _b = this.gridMap.get(a),
+        ai = _b.i,
+        aj = _b.j;
+
+    var _c = this.gridMap.get(b),
+        bi = _c.i,
+        bj = _c.j;
+
+    if (ai === bi) {
+      return [this.get(ai, aj + shift), this.get(bi, bj + shift)];
+    }
+
+    if (aj === bj) {
+      return [this.get(ai + shift, aj), this.get(bi + shift, bj)];
+    }
+
+    return [this.get(ai, bj), this.get(bi, aj)];
   };
 
   Grid.prototype.get = function (i, j) {};
