@@ -7,9 +7,12 @@ interface TypingParams {
    error: number,
 }
 
-const $: { [type: string]: HTMLElement } = {};
-const typingParams: TypingParams = null;
+const MAX_RECORD_ERR = 0.20;
+const TRUST_EPS = 0.1;
 
+const $: { [type: string]: HTMLElement } = {};
+
+let typingParams: TypingParams = null;
 let curMode: 'record' | 'test' = null;
 let curText = '';
 
@@ -46,7 +49,7 @@ function startRecording() {
 
 function startTesting() {
    if (!typingParams) {
-      alert('You have to Record you keyboard handwriting. ' +
+      alert('You have to Record you typing params. ' +
          'Click on the Record button first.');
 
       return;
@@ -70,20 +73,46 @@ function beforeStart() {
 function finishRecording() {
    beforeFinish();
 
-   const typingParams = calcTypingParams();
+   const newTypingParams = calcTypingParams();
+   
+   if (newTypingParams.error > MAX_RECORD_ERR) {
+      alert('Too many errors. Your typing params are not saved.');
+      return;
+   }
+
+   typingParams = newTypingParams;
    console.log(typingParams);
+
+   printTypingParams();
 
    (<HTMLTextAreaElement>$.input).disabled = true;
 }
 
 function finishTesting() {
    beforeFinish();
+
+   const speedEps = typingParams.speed * TRUST_EPS;
+   const errorEps = typingParams.error * TRUST_EPS;
+
+   const newTypingParams = calcTypingParams();
+   console.log(newTypingParams);
+
+   const speedDiff = Math.abs(typingParams.speed - newTypingParams.speed);
+   const errorDiff = Math.abs(typingParams.error - newTypingParams.error);
+
+   if (speedDiff > speedEps || errorDiff > errorEps) {
+      alert('Failed!');
+      return;
+   }
+
+   alert("You're Welcome!");
 }
 
 function beforeFinish() {
    typingTime.finish = Date.now();
    curMode = null;
 
+   (<HTMLTextAreaElement>$.input).disabled = true;
    setControlsDisable(false);
 }
 
@@ -99,7 +128,7 @@ function calcTypingParams(): TypingParams {
       return error + (enteredText[i] === char ? 0 : 1);
    }, 0);
 
-   const error = baseError + overTypingError;
+   const error = (baseError + overTypingError) / curText.length;
 
    return { speed, error };
 }
@@ -110,9 +139,14 @@ function calcRealTextLen(text) {
 
 function updateText() {
    const newIndex = Math.round(Math.random() * texts.length);
-   curText = texts[newIndex, 0].trim();
+   curText = texts[newIndex].trim();
 
    (<HTMLTextAreaElement>$.text).value = curText;
+}
+
+function printTypingParams() {
+   $.speed.innerHTML = Math.round(typingParams.speed) + '';
+   $.errors.innerHTML = Math.round(typingParams.error * 10000) / 100 + '';
 }
 
 function setControlsDisable(val) {
@@ -125,7 +159,7 @@ function getElements() {
    $.record = $.root.querySelector('.record');
    $.test = $.root.querySelector('.test');
    $.speed = $.root.querySelector('.speed');
-   $.accuracy = $.root.querySelector('.accuracy');
+   $.errors = $.root.querySelector('.errors');
    $.text = $.root.querySelector('.text');
    $.input = $.root.querySelector('.input');
 }

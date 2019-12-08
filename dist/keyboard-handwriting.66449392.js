@@ -221,6 +221,8 @@ require("./index.scss");
 
 var texts_1 = __importDefault(require("./texts"));
 
+var MAX_RECORD_ERR = 0.20;
+var TRUST_EPS = 0.1;
 var $ = {};
 var typingParams = null;
 var curMode = null;
@@ -253,7 +255,7 @@ function startRecording() {
 
 function startTesting() {
   if (!typingParams) {
-    alert('You have to Record you keyboard handwriting. ' + 'Click on the Record button first.');
+    alert('You have to Record you typing params. ' + 'Click on the Record button first.');
     return;
   }
 
@@ -272,18 +274,40 @@ function beforeStart() {
 
 function finishRecording() {
   beforeFinish();
-  var typingParams = calcTypingParams();
+  var newTypingParams = calcTypingParams();
+
+  if (newTypingParams.error > MAX_RECORD_ERR) {
+    alert('Too many errors. Your typing params are not saved.');
+    return;
+  }
+
+  typingParams = newTypingParams;
   console.log(typingParams);
+  printTypingParams();
   $.input.disabled = true;
 }
 
 function finishTesting() {
   beforeFinish();
+  var speedEps = typingParams.speed * TRUST_EPS;
+  var errorEps = typingParams.error * TRUST_EPS;
+  var newTypingParams = calcTypingParams();
+  console.log(newTypingParams);
+  var speedDiff = Math.abs(typingParams.speed - newTypingParams.speed);
+  var errorDiff = Math.abs(typingParams.error - newTypingParams.error);
+
+  if (speedDiff > speedEps || errorDiff > errorEps) {
+    alert('Failed!');
+    return;
+  }
+
+  alert("You're Welcome!");
 }
 
 function beforeFinish() {
   typingTime.finish = Date.now();
   curMode = null;
+  $.input.disabled = true;
   setControlsDisable(false);
 }
 
@@ -296,7 +320,7 @@ function calcTypingParams() {
   var baseError = curText.split('').reduce(function (error, char, i) {
     return error + (enteredText[i] === char ? 0 : 1);
   }, 0);
-  var error = baseError + overTypingError;
+  var error = (baseError + overTypingError) / curText.length;
   return {
     speed: speed,
     error: error
@@ -309,8 +333,13 @@ function calcRealTextLen(text) {
 
 function updateText() {
   var newIndex = Math.round(Math.random() * texts_1.default.length);
-  curText = texts_1.default[(newIndex, 0)].trim();
+  curText = texts_1.default[newIndex].trim();
   $.text.value = curText;
+}
+
+function printTypingParams() {
+  $.speed.innerHTML = Math.round(typingParams.speed) + '';
+  $.errors.innerHTML = Math.round(typingParams.error * 10000) / 100 + '';
 }
 
 function setControlsDisable(val) {
@@ -323,7 +352,7 @@ function getElements() {
   $.record = $.root.querySelector('.record');
   $.test = $.root.querySelector('.test');
   $.speed = $.root.querySelector('.speed');
-  $.accuracy = $.root.querySelector('.accuracy');
+  $.errors = $.root.querySelector('.errors');
   $.text = $.root.querySelector('.text');
   $.input = $.root.querySelector('.input');
 }
