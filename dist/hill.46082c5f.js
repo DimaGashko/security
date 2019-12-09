@@ -924,14 +924,31 @@ exports.default = det;
 },{}],"hill/scripts/algorithms/math/confractor.ts":[function(require,module,exports) {
 "use strict";
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function confractor(m, i, j) {}
+var det_1 = __importDefault(require("./det"));
+
+function confractor(m, i, j) {
+  var filtered = m.filter(function (_, k) {
+    return k !== i;
+  }).map(function (r) {
+    return r.filter(function (_, k) {
+      return k !== j;
+    });
+  });
+  return Math.pow(-1, i + j) * det_1.default(filtered);
+}
 
 exports.default = confractor;
-},{}],"hill/scripts/algorithms/math/transpose.ts":[function(require,module,exports) {
+},{"./det":"hill/scripts/algorithms/math/det.ts"}],"hill/scripts/algorithms/math/transpose.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -967,7 +984,7 @@ var transpose_1 = __importDefault(require("./transpose"));
 function adjoint(m) {
   return transpose_1.default(m.map(function (r, i) {
     return r.map(function (_, j) {
-      return Math.pow(-1, i + j) * confractor_1.default(m, i, j);
+      return confractor_1.default(m, i, j);
     });
   }));
 }
