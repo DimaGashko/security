@@ -4,7 +4,8 @@ Some software security demos
 
 Check it out:
 
-- [Keyboard Handwriting](https://dimagashko.github.io/security/keyboard-handwriting/)
+- [Keyboard Handwriting](https://dimagashko.github.io/security/keyboard-handwriting)
+- [Playfair Cipher](https://dimagashko.github.io/security/playfair)
 
 ## Langs & Techs
 
@@ -20,3 +21,35 @@ yarn i
 yarn start
 yarn build
 ```
+
+## Some screenshots
+
+### Keyboard Handwriting
+
+![Screenshot](./screenshots/keyboard-handwriting/1.png)
+![Screenshot](./screenshots/keyboard-handwriting/2.png)
+![Screenshot](./screenshots/keyboard-handwriting/3.png)
+![Screenshot](./screenshots/keyboard-handwriting/4.png)
+![Screenshot](./screenshots/keyboard-handwriting/5.png)
+
+### Playfair Cipher
+
+![Screenshot](./screenshots/playfair/1.png)
+![Screenshot](./screenshots/playfair/2.png)
+![Screenshot](./screenshots/playfair/3.png)
+![Screenshot](./screenshots/playfair/4.png)
+![Screenshot](./screenshots/playfair/5.png)
+![Screenshot](./screenshots/playfair/6.png)
+![Screenshot](./screenshots/playfair/7.png)
+![Screenshot](./screenshots/playfair/8.png)
+![Screenshot](./screenshots/playfair/9.png)
+![Screenshot](./screenshots/playfair/10.png)
+![Screenshot](./screenshots/playfair/11.png)
+![Screenshot](./screenshots/playfair/12.png)
+![Screenshot](./screenshots/playfair/13.png)
+![Screenshot](./screenshots/playfair/14.png)
+![Screenshot](./screenshots/playfair/15.png)
+![Screenshot](./screenshots/playfair/16.png)
+![Screenshot](./screenshots/playfair/17.png)
+![Screenshot](./screenshots/playfair/18.png)
+![Screenshot](./screenshots/playfair/19.png)
