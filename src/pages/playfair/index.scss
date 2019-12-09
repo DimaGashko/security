@@ -2,3 +2,64 @@
 @import '../../styles/base';
 @import '../../styles/header';
 @import '../../styles/main';
+
+button {
+   padding: 1em;
+}
+
+.app {
+   display: flex;
+   justify-content: space-between;
+   flex-direction: column;
+
+   margin: 1.5rem 5vw;
+
+   @include breakpoint($large-tablet) {
+      flex-direction: row;
+   }
+}
+
+.controls,
+.db {
+   flex: 1
+}
+
+.db {
+   margin-left: 1.5rem;
+}
+
+.title {
+   margin-bottom: 0.5em;
+}
+
+.actions {
+   margin-bottom: 2em;
+}
+
+.actions__auth {
+   margin-right: 1rem;
+}
+
+.add__list {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.add__item {
+   margin-top: 16px;
+
+   &:first-child {
+      margin-top: 0;
+   }
+}
+
+.add__label {
+   display: block;
+   margin-bottom: 8px;
+}
+
+.add__field {
+   width: 100%;
+   padding: 1em;
+}
