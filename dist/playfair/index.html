@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        <% users.reverse().forEach(({ login, name, pwd, about }, index) => { %>
+        <% users.slice().reverse().forEach(({ login, name, pwd, about }, index) => { %>
         <tr>
             <td><%= users.length - index %></td>
             <td><%= login %></td>
