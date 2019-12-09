@@ -3,14 +3,14 @@ import chunk from 'lodash/chunk';
 type GridMap = Map<string, { i: number, j: number }>
 
 export default class PlayfairGrid {
-   private grid: string[][];
-   private gridMap: GridMap = new Map();
+   private _grid: string[][];
+   private _gridMap: GridMap = new Map();
 
    constructor(
-      private code: string,
-      private alphabet: string[],
-      private delimiter: string,
-      private width: number,
+      private _code: string,
+      private _alphabet: string[],
+      private _delimiter: string,
+      private _width: number,
    ) {
       this.create();
    }
@@ -33,21 +33,21 @@ export default class PlayfairGrid {
       return this.processPair(pair, 'decode');
    }
 
-   public getAlphabet() {
-      return this.alphabet.slice();
+   public get alphabet() {
+      return this._alphabet.slice();
    }
 
    private create() {
-      this.grid = chunk(this.prepareAlphabet(this.code, this.alphabet), this.width);
-      this.gridMap = this.createGridMap(this.grid);
+      this._grid = chunk(this.prepareAlphabet(this._code, this._alphabet), this._width);
+      this._gridMap = this.createGridMap(this._grid);
    }
 
    private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
       const shift = (mode === 'encode') ? 1 : -1;
       
-      if (b === a || !b) b = this.delimiter;
-      const { i: ai, j: aj } = this.gridMap.get(a);
-      const { i: bi, j: bj } = this.gridMap.get(b);
+      if (b === a || !b) b = this._delimiter;
+      const { i: ai, j: aj } = this._gridMap.get(a);
+      const { i: bi, j: bj } = this._gridMap.get(b);
 
       if (ai === bi) {
          return [
@@ -70,13 +70,13 @@ export default class PlayfairGrid {
    }
 
    private get(i: number, j: number): string {
-      if (i < 0) i = this.grid.length - 1;
-      else if (i === this.grid.length) i = 0;
+      if (i < 0) i = this._grid.length - 1;
+      else if (i === this._grid.length) i = 0;
 
-      if (j < 0) j = this.width - 1;
-      else if (j === this.width) j = 0;
+      if (j < 0) j = this._width - 1;
+      else if (j === this._width) j = 0;
 
-      return this.grid[i][j];
+      return this._grid[i][j];
    }
 
    private createGridMap(grid: string[][]): GridMap {

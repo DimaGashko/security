@@ -2743,12 +2743,12 @@ var chunk_1 = __importDefault(require("lodash/chunk"));
 var PlayfairGrid =
 /** @class */
 function () {
-  function PlayfairGrid(code, alphabet, delimiter, width) {
-    this.code = code;
-    this.alphabet = alphabet;
-    this.delimiter = delimiter;
-    this.width = width;
-    this.gridMap = new Map();
+  function PlayfairGrid(_code, _alphabet, _delimiter, _width) {
+    this._code = _code;
+    this._alphabet = _alphabet;
+    this._delimiter = _delimiter;
+    this._width = _width;
+    this._gridMap = new Map();
     this.create();
   }
 
@@ -2770,26 +2770,30 @@ function () {
     return this.processPair(pair, 'decode');
   };
 
-  PlayfairGrid.prototype.getAlphabet = function () {
-    return this.alphabet.slice();
-  };
+  Object.defineProperty(PlayfairGrid.prototype, "alphabet", {
+    get: function get() {
+      return this._alphabet.slice();
+    },
+    enumerable: true,
+    configurable: true
+  });
 
   PlayfairGrid.prototype.create = function () {
-    this.grid = chunk_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
-    this.gridMap = this.createGridMap(this.grid);
+    this._grid = chunk_1.default(this.prepareAlphabet(this._code, this._alphabet), this._width);
+    this._gridMap = this.createGridMap(this._grid);
   };
 
   PlayfairGrid.prototype.processPair = function (_a, mode) {
     var a = _a[0],
         b = _a[1];
     var shift = mode === 'encode' ? 1 : -1;
-    if (b === a || !b) b = this.delimiter;
+    if (b === a || !b) b = this._delimiter;
 
-    var _b = this.gridMap.get(a),
+    var _b = this._gridMap.get(a),
         ai = _b.i,
         aj = _b.j;
 
-    var _c = this.gridMap.get(b),
+    var _c = this._gridMap.get(b),
         bi = _c.i,
         bj = _c.j;
 
@@ -2805,9 +2809,9 @@ function () {
   };
 
   PlayfairGrid.prototype.get = function (i, j) {
-    if (i < 0) i = this.grid.length - 1;else if (i === this.grid.length) i = 0;
-    if (j < 0) j = this.width - 1;else if (j === this.width) j = 0;
-    return this.grid[i][j];
+    if (i < 0) i = this._grid.length - 1;else if (i === this._grid.length) i = 0;
+    if (j < 0) j = this._width - 1;else if (j === this._width) j = 0;
+    return this._grid[i][j];
   };
 
   PlayfairGrid.prototype.createGridMap = function (grid) {
@@ -2850,8 +2854,8 @@ Object.defineProperty(exports, "__esModule", {
 var chunk_1 = __importDefault(require("lodash/chunk"));
 
 function encode(msg, grid) {
-  return prepareMsg(msg).map(function (p) {
-    return grid.encodePair(p);
+  return prepareMsg(msg, grid.alphabet).map(function (pair) {
+    return grid.encodePair(pair);
   }).flatMap(function (s) {
     return s;
   }).join('');
@@ -2860,8 +2864,8 @@ function encode(msg, grid) {
 exports.encode = encode;
 
 function decode(msg, grid) {
-  return prepareMsg(msg).map(function (p) {
-    return grid.decodePair(p);
+  return prepareMsg(msg, grid.alphabet).map(function (pair) {
+    return grid.decodePair(pair);
   }).flatMap(function (s) {
     return s;
   }).join('');
@@ -2869,8 +2873,9 @@ function decode(msg, grid) {
 
 exports.decode = decode;
 
-function prepareMsg(msg) {
-  return chunk_1.default(msg.toLowerCase().replace(/\s/g, '').split(''), 2);
+function prepareMsg(msg, alphabet) {
+  msg = msg.toLowerCase().replace(/\s/g, '').replace(new RegExp("[^" + alphabet.join('') + "]", 'g'), alphabet[0]);
+  return chunk_1.default(msg.split(''), 2);
 }
 },{"lodash/chunk":"../../node_modules/lodash/chunk.js"}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
