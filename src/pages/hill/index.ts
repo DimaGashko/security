@@ -3,11 +3,14 @@ import './index.scss';
 import { encode, decode } from './scripts/algorithms/hill';
 import matMulVec from './scripts/algorithms/math/matMulVec';
 import invertMat from './scripts/algorithms/math/modInvMat';
+import det from './scripts/algorithms/math/det';
+import modInvMat from './scripts/algorithms/math/modInvMat';
 
 window.hillEncode = encode;
 window.hillDecode = decode;
 window.mulV = matMulVec;
-window.inv = invertMat;
+window.inv = modInvMat;
+window.det = det;
 
 const $app: HTMLElement = document.querySelector('.app');
 
