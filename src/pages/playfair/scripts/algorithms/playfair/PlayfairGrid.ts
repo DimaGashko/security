@@ -26,7 +26,7 @@ export default class PlayfairGrid {
    }
 
    public encodePair(pair: string[]): string[] {
-      return this.processPair(pair, 'encode');      
+      return this.processPair(pair, 'encode');
    }
 
    public decodePair(pair: string[]): string[] {
@@ -44,29 +44,24 @@ export default class PlayfairGrid {
 
    private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
       const shift = (mode === 'encode') ? 1 : -1;
-      
+
       if (b === a || !b) b = this._delimiter;
       const { i: ai, j: aj } = this._gridMap.get(a);
       const { i: bi, j: bj } = this._gridMap.get(b);
 
       if (ai === bi) {
-         return [
-            this.get(ai, aj + shift),
-            this.get(bi, bj + shift),
-         ];
+         return this.getPair(ai, aj + shift, bi, bj + shift)
       }
 
       if (aj === bj) {
-         return [
-            this.get(ai + shift, aj),
-            this.get(bi + shift, bj),
-         ];
+         return this.getPair(ai + shift, aj, bi + shift, bj);
       }
 
-      return [
-         this.get(ai, bj),
-         this.get(bi, aj),
-      ];
+      return this.getPair(ai, bj, bi, aj);
+   }
+
+   private getPair(ai: number, aj: number, bi: number, bj: number) {
+      return [this.get(ai, ai), this.get(bi, bj)];
    }
 
    private get(i: number, j: number): string {
