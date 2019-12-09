@@ -893,6 +893,133 @@ function matMulVec(a, b) {
 }
 
 exports.default = matMulVec;
+},{}],"hill/scripts/invertMat.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Find the inverse of matrix
+ * Original: http://blog.acipo.com/matrix-inversion-in-javascript/
+ */
+
+function invertMat(M) {
+  // I use Guassian Elimination to calculate the inverse:
+  // (1) 'augment' the matrix (left) by the identity (on the right)
+  // (2) Turn the matrix on the left into the identity by elementary row ops
+  // (3) The matrix on the right is the inverse (was the identity matrix)
+  // There are 3 elementary row ops: (I combine b and c in my code)
+  // (a) Swap 2 rows
+  // (b) Multiply a row by a scalar
+  // (c) Add 2 rows
+  //if the matrix isn't square: exit (error)
+  if (M.length !== M[0].length) {
+    return;
+  } //create the identity matrix (I), and a copy (C) of the original
+
+
+  var i = 0,
+      ii = 0,
+      j = 0,
+      dim = M.length,
+      e = 0,
+      t = 0;
+  var I = [],
+      C = [];
+
+  for (i = 0; i < dim; i += 1) {
+    // Create the row
+    I[I.length] = [];
+    C[C.length] = [];
+
+    for (j = 0; j < dim; j += 1) {
+      //if we're on the diagonal, put a 1 (for identity)
+      if (i == j) {
+        I[i][j] = 1;
+      } else {
+        I[i][j] = 0;
+      } // Also, make the copy of the original
+
+
+      C[i][j] = M[i][j];
+    }
+  } // Perform elementary row operations
+
+
+  for (i = 0; i < dim; i += 1) {
+    // get the element e on the diagonal
+    e = C[i][i]; // if we have a 0 on the diagonal (we'll need to swap with a lower row)
+
+    if (e == 0) {
+      //look through every row below the i'th row
+      for (ii = i + 1; ii < dim; ii += 1) {
+        //if the ii'th row has a non-0 in the i'th col
+        if (C[ii][i] != 0) {
+          //it would make the diagonal have a non-0 so swap it
+          for (j = 0; j < dim; j++) {
+            e = C[i][j]; //temp store i'th row
+
+            C[i][j] = C[ii][j]; //replace i'th row by ii'th
+
+            C[ii][j] = e; //repace ii'th by temp
+
+            e = I[i][j]; //temp store i'th row
+
+            I[i][j] = I[ii][j]; //replace i'th row by ii'th
+
+            I[ii][j] = e; //repace ii'th by temp
+          } //don't bother checking other rows since we've swapped
+
+
+          break;
+        }
+      } //get the new diagonal
+
+
+      e = C[i][i]; //if it's still 0, not invertable (error)
+
+      if (e == 0) {
+        return;
+      }
+    } // Scale this row down by e (so we have a 1 on the diagonal)
+
+
+    for (j = 0; j < dim; j++) {
+      C[i][j] = C[i][j] / e; //apply to original matrix
+
+      I[i][j] = I[i][j] / e; //apply to identity
+    } // Subtract this row (scaled appropriately for each row) from ALL of
+    // the other rows so that there will be 0's in this column in the
+    // rows above and below this one
+
+
+    for (ii = 0; ii < dim; ii++) {
+      // Only apply to other rows (we want a 1 on the diagonal)
+      if (ii == i) {
+        continue;
+      } // We want to change this element to 0
+
+
+      e = C[ii][i]; // Subtract (the row above(or below) scaled by e) from (the
+      // current row) but start at the i'th column and assume all the
+      // stuff left of diagonal is 0 (which it should be if we made this
+      // algorithm correctly)
+
+      for (j = 0; j < dim; j++) {
+        C[ii][j] -= e * C[i][j]; //apply to original matrix
+
+        I[ii][j] -= e * I[i][j]; //apply to identity
+      }
+    }
+  } //we've done all operations, C should be the identity
+  //matrix I should be the inverse:
+
+
+  return I;
+}
+
+exports.default = invertMat;
 },{}],"hill/scripts/algorithms/hill.ts":[function(require,module,exports) {
 "use strict";
 
@@ -910,6 +1037,8 @@ var chunk_1 = __importDefault(require("lodash/chunk"));
 
 var matMulVec_1 = __importDefault(require("../matMulVec"));
 
+var invertMat_1 = __importDefault(require("../invertMat"));
+
 var ALPHABET_LEN = Math.pow(2, 16);
 var ALPHABET_SHIFT = 0;
 /**
@@ -926,6 +1055,7 @@ function encode(_msg, _key) {
 
   var msg = (_msg + _msg).slice(0, Math.ceil(_msg.length / size) * size);
 
+  console.log(key, invertMat_1.default(key));
   return chunk_1.default(msg.split('').map(function (ch) {
     return ch.codePointAt(0);
   }), size).map(function (m) {
@@ -937,19 +1067,34 @@ function encode(_msg, _key) {
   }).join('').slice(0, _msg.length);
 }
 
-exports.default = encode;
+exports.encode = encode;
+
+function decode(_msg, _key) {
+  var size = Math.sqrt(_key.length) ^ 0;
+  var key = chunk_1.default(_key.split('').map(function (ch) {
+    return ch.charCodeAt(0);
+  }), size);
+
+  var msg = (_msg + _msg).slice(0, Math.ceil(_msg.length / size) * size);
+
+  return chunk_1.default(msg.split('').map(function (ch) {
+    return ch.codePointAt(0);
+  }), size).map(function (m) {
+    return processMsg(m, invertMat_1.default(key));
+  }).flatMap(function (r) {
+    return r;
+  }).map(function (code) {
+    return String.fromCharCode(code % ALPHABET_LEN + ALPHABET_SHIFT);
+  }).join('').slice(0, _msg.length);
+}
+
+exports.decode = decode;
 
 function processMsg(msg, key) {
   return matMulVec_1.default(key, msg);
 }
-},{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts"}],"hill/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -959,12 +1104,17 @@ require("normalize.scss/normalize.scss");
 
 require("./index.scss");
 
-var hill_1 = __importDefault(require("./scripts/algorithms/hill"));
+var hill_1 = require("./scripts/algorithms/hill");
 
 var $app = document.querySelector('.app');
 var key = 'do you love code so much?';
 var msg = "Harry Potter and the Philosophers Stone";
-console.log(hill_1.default(msg, key));
+window.hillEncode = hill_1.encode;
+window.hillDecode = hill_1.decode;
+var encoded = hill_1.encode(msg, key);
+console.log(msg);
+console.log(encoded);
+console.log(hill_1.decode(encoded, key));
 initEvents();
 
 function initEvents() {}
