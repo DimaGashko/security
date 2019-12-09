@@ -908,16 +908,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var chunk_1 = __importDefault(require("lodash/chunk"));
 
-var matMulVec_1 = __importDefault(require("../matMulVec")); // There's method String.fromCharCode() that returns char by its code
-// This method is looped: String.fromCharCode('a'.charCodeAt() + 2 ** 16) // a
-// So, that's mean we don't need calc any mod in this cipher
+var matMulVec_1 = __importDefault(require("../matMulVec"));
 
+var ALPHABET_LEN = Math.pow(2, 16);
+var ALPHABET_SHIFT = 0;
 /**
  * Encode the message using Hill Cipher
  * @param msg your message
  * @param key square char matrix
  */
-
 
 function encode(_msg, _key) {
   var size = Math.sqrt(_key.length) ^ 0;
@@ -927,20 +926,20 @@ function encode(_msg, _key) {
 
   var msg = (_msg + _msg).slice(0, Math.ceil(_msg.length / size) * size);
 
-  console.log(_msg, msg);
   return chunk_1.default(msg.split('').map(function (ch) {
     return ch.codePointAt(0);
   }), size).map(function (m) {
     return processMsg(m, key);
-  }).flatMap(function (code) {
-    return String.fromCharCode(code);
-  });
+  }).flatMap(function (r) {
+    return r;
+  }).map(function (code) {
+    return String.fromCharCode(code % ALPHABET_LEN + ALPHABET_SHIFT);
+  }).join('').slice(0, _msg.length);
 }
 
 exports.default = encode;
 
 function processMsg(msg, key) {
-  console.log(key, msg);
   return matMulVec_1.default(key, msg);
 }
 },{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts"}],"hill/index.ts":[function(require,module,exports) {
@@ -963,7 +962,9 @@ require("./index.scss");
 var hill_1 = __importDefault(require("./scripts/algorithms/hill"));
 
 var $app = document.querySelector('.app');
-console.log(hill_1.default('secret message', 'do you love code so much?'));
+var key = 'do you love code so much?';
+var msg = "Harry Potter and the Philosophers Stone";
+console.log(hill_1.default(msg, key));
 initEvents();
 
 function initEvents() {}
@@ -995,7 +996,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38989" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34913" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
