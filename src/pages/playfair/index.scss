@@ -7,6 +7,13 @@ button {
    padding: 1em;
 }
 
+textarea {
+   resize: vertical;
+   height: 120px;
+   min-height: 120px;
+   max-height: 350px;
+}
+
 .app {
    display: flex;
    justify-content: space-between;

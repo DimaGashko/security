@@ -2902,9 +2902,6 @@ var playfair_1 = require("./scripts/algorithms/playfair");
 
 var users_1 = __importDefault(require("./templates/users"));
 
-window.PlayfairGrid = PlayfairGrid_1.default;
-window.e = playfair_1.encode;
-window.d = playfair_1.decode;
 var KEYWORD = 'cluster';
 var $app = document.querySelector('.app');
 var $auth = $app.querySelector('.actions__auth');
@@ -2914,6 +2911,7 @@ var $addForm = $app.querySelector('.add');
 var $login = $addForm.login;
 var $name = $addForm.username;
 var $pwd = $addForm.pwd;
+var $about = $addForm.about;
 var playfairGrid = PlayfairGrid_1.default.createEnGrid(KEYWORD);
 var users = 'users' in localStorage ? JSON.parse(localStorage.users) : [];
 var userTemplate = template_1.default(users_1.default);
@@ -2951,7 +2949,9 @@ function auth() {
     return;
   }
 
-  alert("Success!\nLogin: " + login + "\nName: " + user.name);
+  var name = user.name,
+      about = user.about;
+  alert("Success!\nLogin: " + login + "\nName: " + name + "\nAbout: " + about);
 }
 
 function decodeUser() {
@@ -2974,10 +2974,12 @@ function addUser() {
   var login = $login.value.trim();
   var name = $name.value.trim();
   var pwd = playfair_1.encode($pwd.value.trim(), playfairGrid);
+  var about = $about.value.trim();
   saveUser({
     login: login,
     name: name,
-    pwd: pwd
+    pwd: pwd,
+    about: about
   });
   renderUsers();
   $addForm.reset();

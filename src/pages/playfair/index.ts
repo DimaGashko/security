@@ -8,14 +8,11 @@ import { encode, decode } from './scripts/algorithms/playfair';
 
 import userTemplateText from './templates/users';
 
-window.PlayfairGrid = PlayfairGrid;
-window.e = encode;
-window.d = decode;
-
 interface User {
    login: string;
    name: string;
    pwd: string;
+   about: string;
 }
 
 const KEYWORD = 'cluster';
@@ -29,6 +26,7 @@ const $addForm: HTMLFormElement = $app.querySelector('.add');
 const $login: HTMLInputElement = $addForm.login;
 const $name: HTMLInputElement = $addForm.username;
 const $pwd: HTMLInputElement = $addForm.pwd;
+const $about: HTMLTextAreaElement = $addForm.about;
 
 const playfairGrid = PlayfairGrid.createEnGrid(KEYWORD);
 
@@ -71,7 +69,8 @@ function auth() {
       return;
    }
 
-   alert(`Success!\nLogin: ${login}\nName: ${user.name}`);
+   const { name, about } = user;
+   alert(`Success!\nLogin: ${login}\nName: ${name}\nAbout: ${about}`);
 }
 
 function decodeUser() {
@@ -92,8 +91,9 @@ function addUser() {
    const login = $login.value.trim();
    const name = $name.value.trim();
    const pwd = encode($pwd.value.trim(), playfairGrid);
+   const about = $about.value.trim();
 
-   saveUser({ login, name, pwd });
+   saveUser({ login, name, pwd, about });
    renderUsers();
 
    $addForm.reset();
