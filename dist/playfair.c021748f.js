@@ -2743,8 +2743,8 @@ var chunk_1 = __importDefault(require("lodash/chunk"));
 var PlayfairGrid =
 /** @class */
 function () {
-  function PlayfairGrid(_code, _alphabet, _delimiter, _width) {
-    this._code = _code;
+  function PlayfairGrid(_keyword, _alphabet, _delimiter, _width) {
+    this._keyword = _keyword;
     this._alphabet = _alphabet;
     this._delimiter = _delimiter;
     this._width = _width;
@@ -2752,14 +2752,14 @@ function () {
     this.create();
   }
 
-  PlayfairGrid.createEnGrid = function (code) {
+  PlayfairGrid.createEnGrid = function (keyword) {
     var alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
-    return new PlayfairGrid(code, alphabet, "'", 5);
+    return new PlayfairGrid(keyword, alphabet, "'", 5);
   };
 
-  PlayfairGrid.createUaGrid = function (code) {
+  PlayfairGrid.createUaGrid = function (keyword) {
     var alphabet = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
-    return new PlayfairGrid(code, alphabet, "'", 5);
+    return new PlayfairGrid(keyword, alphabet, "'", 5);
   };
 
   PlayfairGrid.prototype.encodePair = function (pair) {
@@ -2779,7 +2779,7 @@ function () {
   });
 
   PlayfairGrid.prototype.create = function () {
-    this._grid = chunk_1.default(this.prepareAlphabet(this._code, this._alphabet), this._width);
+    this._grid = chunk_1.default(this.prepareAlphabet(this._keyword, this._alphabet), this._width);
     this._gridMap = this.createGridMap(this._grid);
   };
 
@@ -2830,10 +2830,10 @@ function () {
     }, new Map());
   };
 
-  PlayfairGrid.prototype.prepareAlphabet = function (code, alphabet) {
-    code = code.toLowerCase();
-    var codeSet = new Set(code);
-    return __spreadArrays(code.split(''), alphabet.filter(function (ch) {
+  PlayfairGrid.prototype.prepareAlphabet = function (keyword, alphabet) {
+    keyword = keyword.toLowerCase();
+    var codeSet = new Set(keyword);
+    return __spreadArrays(keyword.split(''), alphabet.filter(function (ch) {
       return !codeSet.has(ch);
     }));
   };

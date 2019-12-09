@@ -7,7 +7,7 @@ export default class PlayfairGrid {
    private _gridMap: GridMap = new Map();
 
    constructor(
-      private _code: string,
+      private _keyword: string,
       private _alphabet: string[],
       private _delimiter: string,
       private _width: number,
@@ -15,14 +15,14 @@ export default class PlayfairGrid {
       this.create();
    }
 
-   public static createEnGrid(code: string) {
+   public static createEnGrid(keyword: string) {
       const alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
-      return new PlayfairGrid(code, alphabet, "'", 5);
+      return new PlayfairGrid(keyword, alphabet, "'", 5);
    }
 
-   public static createUaGrid(code: string) {
+   public static createUaGrid(keyword: string) {
       const alphabet = "абвгдеєжзиіїйклмнопрстуфхцчшщьюя'._".split('');
-      return new PlayfairGrid(code, alphabet, "'", 5);
+      return new PlayfairGrid(keyword, alphabet, "'", 5);
    }
 
    public encodePair(pair: string[]): string[] {
@@ -38,7 +38,7 @@ export default class PlayfairGrid {
    }
 
    private create() {
-      this._grid = chunk(this.prepareAlphabet(this._code, this._alphabet), this._width);
+      this._grid = chunk(this.prepareAlphabet(this._keyword, this._alphabet), this._width);
       this._gridMap = this.createGridMap(this._grid);
    }
 
@@ -81,10 +81,10 @@ export default class PlayfairGrid {
       }, new Map());
    }
 
-   private prepareAlphabet(code: string, alphabet: string[]): string[] {
-      code = code.toLowerCase();
+   private prepareAlphabet(keyword: string, alphabet: string[]): string[] {
+      keyword = keyword.toLowerCase();
 
-      const codeSet = new Set(code);
-      return [...code.split(''), ...alphabet.filter(ch => !codeSet.has(ch))]
+      const codeSet = new Set(keyword);
+      return [...keyword.split(''), ...alphabet.filter(ch => !codeSet.has(ch))]
    }
 }
