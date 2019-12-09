@@ -1020,6 +1020,14 @@ function invertMat(M) {
 }
 
 exports.default = invertMat;
+
+function modInverse(a, m) {
+  a = a % m;
+
+  for (var x = 1; x < m; x++) {
+    if (a * x % m == 1) return x;
+  }
+}
 },{}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
@@ -1251,14 +1259,12 @@ var invertMat_1 = __importDefault(require("../invertMat"));
 
 function encode(msg, _key) {
   var key = prepareKey(_key);
-  console.log(key);
   return process(padMsg(msg, key[0].length), key);
 }
 
 exports.encode = encode;
 
 function decode(msg, key) {
-  console.log(invertMat_1.default(prepareKey(key)), '=');
   return process(msg, invertMat_1.default(prepareKey(key)));
 }
 
@@ -1266,7 +1272,9 @@ exports.decode = decode;
 
 function process(msg, key) {
   return chunk_1.default(prepareStr(msg), key[0].length).map(function (m) {
-    return matMulVec_1.default(key, m);
+    return matMulVec_1.default(key, m).map(function (c) {
+      return c % Math.pow(2, 16);
+    });
   }).flatMap(function (r) {
     return r;
   }).map(function (code) {
@@ -1295,6 +1303,12 @@ function padMsg(msg, size) {
 },{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1305,11 +1319,17 @@ require("./index.scss");
 
 var hill_1 = require("./scripts/algorithms/hill");
 
+var matMulVec_1 = __importDefault(require("./scripts/matMulVec"));
+
+var invertMat_1 = __importDefault(require("./scripts/invertMat"));
+
 window.hillEncode = hill_1.encode;
 window.hillDecode = hill_1.decode;
+window.mulV = matMulVec_1.default;
+window.inv = invertMat_1.default;
 var $app = document.querySelector('.app');
-var key = 'do you love code so much?';
-var msg = "Harry Potter & \uBEC8\uC654\uB550\u9C4C\uC32A\uA630\uAF38\uA129\u8949\uA8C9\u79E2\u6689\u5CD9\u5659\u805B";
+var key = 'do you love code';
+var msg = "Harry \u0456 \u0457\u044B";
 var encoded = hill_1.encode(msg, key);
 console.log(msg);
 console.log(encoded);
@@ -1318,7 +1338,7 @@ console.log(hill_1.decode(encoded, key));
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/matMulVec":"hill/scripts/matMulVec.ts","./scripts/invertMat":"hill/scripts/invertMat.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

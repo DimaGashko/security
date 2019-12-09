@@ -98,3 +98,10 @@ export default function invertMat(M: number[][]) {
    //matrix I should be the inverse:
    return I;
 }
+
+function modInverse(a, m) {
+   a = a % m;
+   for (let x = 1; x < m; x++)
+      if ((a * x) % m == 1)
+         return x;
+} 

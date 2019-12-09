@@ -1,15 +1,19 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
 import { encode, decode } from './scripts/algorithms/hill';
+import matMulVec from './scripts/matMulVec';
+import invertMat from './scripts/invertMat';
 
 window.hillEncode = encode;
 window.hillDecode = decode;
+window.mulV = matMulVec;
+window.inv = invertMat;
 
 const $app: HTMLElement = document.querySelector('.app');
 
-const key = 'do you love code so much?';
+const key = 'do you love code';
 
-const msg = `Harry Potter & 뻈왔땐鱌쌪꘰꼸ꄩ襉꣉秢暉峙噙聛`;
+const msg = `Harry і їы`;
 
 const encoded = encode(msg, key);
 
