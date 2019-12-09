@@ -18,21 +18,21 @@ html(lang="en")
             h1 Encode
 
             p Key
-            input.encode-key
+            input.encode-key(value="do_you_love_code_so_much?" maxlength="100")
 
             p Message
-            textarea.encode-msg
+            textarea.encode-msg(maxlength="10000") Some secret message!
 
             p Encoded message
-            textarea.encode-res
+            textarea.encode-res(readonly)
 
             h1 Decode
 
             p Key
-            input.decode-key
+            input.decode-key(value="do_you_love_code_so_much?" maxlength="100")
 
             p Message
-            textarea.decode-msg
+            textarea.decode-msg(maxlength="12000")
 
             p Decoded message
-            textarea.decode-res
+            textarea.decode-res(readonly)
