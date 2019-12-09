@@ -353,12 +353,40 @@ var $decode = $app.querySelector('.actions__decode');
 var $db = $app.querySelector('.db__content');
 var $addForm = $app.querySelector('.add');
 var $login = $addForm.login;
-var $name = $addForm.user_name;
+var $name = $addForm.username;
 var $pwd = $addForm.pwd;
 var playfairGrid = PlayfairGrid_1.default.createEnGrid('cluster');
 initEvents();
 
-function initEvents() {}
+function initEvents() {
+  $auth.addEventListener('click', function () {
+    auth();
+  });
+  $decode.addEventListener('click', function () {
+    decode();
+  });
+  $addForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    addUser();
+  });
+}
+
+function auth() {
+  console.log('auth');
+}
+
+function decode() {
+  console.log('decode');
+}
+
+function addUser() {
+  var data = {
+    login: $login.value.trim(),
+    name: $name.value.trim(),
+    pwd: $pwd.value.trim()
+  };
+  console.log(data);
+}
 },{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","./algorithms/playfair/PlayfairGrid":"playfair/algorithms/playfair/PlayfairGrid.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

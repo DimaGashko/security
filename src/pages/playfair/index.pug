@@ -28,14 +28,14 @@ html(lang="en")
 
                     ul.add__list
                         li.add__item
-                            label.add__label(for="add__login") Login
-                            input.add__field#add__login(name="login")
+                            label.add__label(for="add__login") Login/Email
+                            input.add__field#add__login(name="login" required)
                         li.add__item
                             label.add__label(for="add__name") Name
-                            input.add__field#add__name(name="user_name")
+                            input.add__field#add__name(name="username" required)
                         li.add__item
                             label.add__label(for="add__pwd") Password
-                            input.add__field#add__pwd(type="password" name="pwd")
+                            input.add__field#add__pwd(type="password" name="pwd" required)
                         li.add__item
                             button.add__field(type=submit) Register
 
