@@ -13,6 +13,22 @@ html(lang="en")
                 img.app-logo__img(src="../../img/logo.png" alt="Software Security" width="32" height="32")
                 h1.app-logo__label Playfair Cipher
 
-        main.app-main
+        main.app
             
-            h1 Playfair Cipher
+            .actions
+                button.actions__auth
+                button.actions__decode
+            
+            form.add
+
+                ul.add__list
+                    li.add__item
+                        input(name="login")
+                    li.add__item
+                        input(name="name")
+                    li.add__item
+                        input(type="password" name="password")
+                    li.add_item
+                        button(type=submit) Register
+
+            .db There are no users

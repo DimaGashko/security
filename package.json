@@ -8,6 +8,7 @@
       "build": "parcel build src/pages/**/index.pug --public-url ../"
    },
    "dependencies": {
+      "lodash.template": "^4.5.0",
       "throttle-debounce": "^2.1.0"
    },
    "devDependencies": {
