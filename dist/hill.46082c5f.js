@@ -1040,22 +1040,18 @@ var matMulVec_1 = __importDefault(require("../matMulVec"));
 var invertMat_1 = __importDefault(require("../invertMat"));
 
 var ALPHABET_LEN = Math.pow(2, 16);
-var ALPHABET_SHIFT = 0;
 /**
  * Encode the message using Hill Cipher
  * @param msg your message
  * @param key square char matrix
  */
 
-function encode(_msg, _key) {
+function encode(msg, _key) {
   var size = Math.sqrt(_key.length) ^ 0;
   var key = chunk_1.default(_key.split('').map(function (ch) {
     return ch.charCodeAt(0);
   }), size);
-
-  var msg = (_msg + _msg).slice(0, Math.ceil(_msg.length / size) * size);
-
-  console.log(key, invertMat_1.default(key));
+  msg = msg.padEnd(msg.length + size - msg.length % size, ' ');
   return chunk_1.default(msg.split('').map(function (ch) {
     return ch.codePointAt(0);
   }), size).map(function (m) {
@@ -1063,20 +1059,17 @@ function encode(_msg, _key) {
   }).flatMap(function (r) {
     return r;
   }).map(function (code) {
-    return String.fromCharCode(code % ALPHABET_LEN + ALPHABET_SHIFT);
-  }).join('').slice(0, _msg.length);
+    return String.fromCharCode(code % ALPHABET_LEN);
+  }).join('');
 }
 
 exports.encode = encode;
 
-function decode(_msg, _key) {
+function decode(msg, _key) {
   var size = Math.sqrt(_key.length) ^ 0;
   var key = chunk_1.default(_key.split('').map(function (ch) {
     return ch.charCodeAt(0);
   }), size);
-
-  var msg = (_msg + _msg).slice(0, Math.ceil(_msg.length / size) * size);
-
   return chunk_1.default(msg.split('').map(function (ch) {
     return ch.codePointAt(0);
   }), size).map(function (m) {
@@ -1084,8 +1077,10 @@ function decode(_msg, _key) {
   }).flatMap(function (r) {
     return r;
   }).map(function (code) {
-    return String.fromCharCode(code % ALPHABET_LEN + ALPHABET_SHIFT);
-  }).join('').slice(0, _msg.length);
+    return Math.round(code);
+  }).map(function (code) {
+    return String.fromCharCode(code % ALPHABET_LEN);
+  }).join('');
 }
 
 exports.decode = decode;
@@ -1093,6 +1088,8 @@ exports.decode = decode;
 function processMsg(msg, key) {
   return matMulVec_1.default(key, msg);
 }
+
+function prepareKey() {}
 },{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -1106,14 +1103,15 @@ require("./index.scss");
 
 var hill_1 = require("./scripts/algorithms/hill");
 
-var $app = document.querySelector('.app');
-var key = 'do you love code so much?';
-var msg = "Harry Potter and the Philosophers Stone";
 window.hillEncode = hill_1.encode;
 window.hillDecode = hill_1.decode;
+var $app = document.querySelector('.app');
+var key = 'do you love code so much?';
+var msg = "Harry Potter";
 var encoded = hill_1.encode(msg, key);
 console.log(msg);
 console.log(encoded);
+console.log('-------');
 console.log(hill_1.decode(encoded, key));
 initEvents();
 
