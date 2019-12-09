@@ -915,7 +915,7 @@ function invertMat(M) {
   // (c) Add 2 rows
   //if the matrix isn't square: exit (error)
   if (M.length !== M[0].length) {
-    return;
+    throw "Can't find invert matrix";
   } //create the identity matrix (I), and a copy (C) of the original
 
 
@@ -980,7 +980,7 @@ function invertMat(M) {
       e = C[i][i]; //if it's still 0, not invertable (error)
 
       if (e == 0) {
-        return;
+        throw "Can't find invert matrix";
       }
     } // Scale this row down by e (so we have a 1 on the diagonal)
 
@@ -1020,7 +1020,217 @@ function invertMat(M) {
 }
 
 exports.default = invertMat;
+},{}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
 },{}],"hill/scripts/algorithms/hill.ts":[function(require,module,exports) {
+
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1039,58 +1249,50 @@ var matMulVec_1 = __importDefault(require("../matMulVec"));
 
 var invertMat_1 = __importDefault(require("../invertMat"));
 
-var ALPHABET_LEN = Math.pow(2, 16);
-/**
- * Encode the message using Hill Cipher
- * @param msg your message
- * @param key square char matrix
- */
-
 function encode(msg, _key) {
-  var size = Math.sqrt(_key.length) ^ 0;
-  var key = chunk_1.default(_key.split('').map(function (ch) {
-    return ch.charCodeAt(0);
-  }), size);
-  msg = msg.padEnd(msg.length + size - msg.length % size, ' ');
-  return chunk_1.default(msg.split('').map(function (ch) {
-    return ch.codePointAt(0);
-  }), size).map(function (m) {
-    return processMsg(m, key);
-  }).flatMap(function (r) {
-    return r;
-  }).map(function (code) {
-    return String.fromCharCode(code % ALPHABET_LEN);
-  }).join('');
+  var key = prepareKey(_key);
+  console.log(key);
+  return process(padMsg(msg, key[0].length), key);
 }
 
 exports.encode = encode;
 
-function decode(msg, _key) {
-  var size = Math.sqrt(_key.length) ^ 0;
-  var key = chunk_1.default(_key.split('').map(function (ch) {
-    return ch.charCodeAt(0);
-  }), size);
-  return chunk_1.default(msg.split('').map(function (ch) {
-    return ch.codePointAt(0);
-  }), size).map(function (m) {
-    return processMsg(m, invertMat_1.default(key));
+function decode(msg, key) {
+  console.log(invertMat_1.default(prepareKey(key)), '=');
+  return process(msg, invertMat_1.default(prepareKey(key)));
+}
+
+exports.decode = decode;
+
+function process(msg, key) {
+  return chunk_1.default(prepareStr(msg), key[0].length).map(function (m) {
+    return matMulVec_1.default(key, m);
   }).flatMap(function (r) {
     return r;
   }).map(function (code) {
     return Math.round(code);
   }).map(function (code) {
-    return String.fromCharCode(code % ALPHABET_LEN);
+    return String.fromCharCode(code);
   }).join('');
 }
 
-exports.decode = decode;
-
-function processMsg(msg, key) {
-  return matMulVec_1.default(key, msg);
+function prepareKey(key) {
+  var size = Math.sqrt(key.length) ^ 0;
+  return chunk_1.default(key.slice(0, size * size).split('').map(function (ch) {
+    return ch.codePointAt(0);
+  }), size);
 }
 
-function prepareKey() {}
-},{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts"}],"hill/index.ts":[function(require,module,exports) {
+function prepareStr(str) {
+  return str.split('').map(function (ch) {
+    return ch.codePointAt(0);
+  });
+}
+
+function padMsg(msg, size) {
+  return msg.padEnd(msg.length + size - msg.length % size, ' ');
+}
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1107,7 +1309,7 @@ window.hillEncode = hill_1.encode;
 window.hillDecode = hill_1.decode;
 var $app = document.querySelector('.app');
 var key = 'do you love code so much?';
-var msg = "Harry Potter";
+var msg = "Harry Potter & \uBEC8\uC654\uB550\u9C4C\uC32A\uA630\uAF38\uA129\u8949\uA8C9\u79E2\u6689\u5CD9\u5659\u805B";
 var encoded = hill_1.encode(msg, key);
 console.log(msg);
 console.log(encoded);

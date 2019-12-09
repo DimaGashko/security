@@ -13,7 +13,9 @@ export default function invertMat(M: number[][]) {
    // (c) Add 2 rows
 
    //if the matrix isn't square: exit (error)
-   if (M.length !== M[0].length) { return; }
+   if (M.length !== M[0].length) {
+      throw "Can't find invert matrix";
+   }
 
    //create the identity matrix (I), and a copy (C) of the original
    var i = 0, ii = 0, j = 0, dim = M.length, e = 0, t = 0;
@@ -60,7 +62,9 @@ export default function invertMat(M: number[][]) {
          //get the new diagonal
          e = C[i][i];
          //if it's still 0, not invertable (error)
-         if (e == 0) { return }
+         if (e == 0) {
+            throw "Can't find invert matrix";
+         }
       }
 
       // Scale this row down by e (so we have a 1 on the diagonal)

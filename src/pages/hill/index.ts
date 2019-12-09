@@ -9,7 +9,7 @@ const $app: HTMLElement = document.querySelector('.app');
 
 const key = 'do you love code so much?';
 
-const msg = `Harry Potter`;
+const msg = `Harry Potter & 뻈왔땐鱌쌪꘰꼸ꄩ襉꣉秢暉峙噙聛`;
 
 const encoded = encode(msg, key);
 

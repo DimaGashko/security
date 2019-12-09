@@ -2,41 +2,38 @@ import chunk from 'lodash/chunk';
 import matMulVec from '../matMulVec';
 import invertMat from '../invertMat';
 
-const ALPHABET_LEN = 2 ** 16;
-
-/**
- * Encode the message using Hill Cipher
- * @param msg your message
- * @param key square char matrix
- */
 export function encode(msg: string, _key: string): string {
-   const size = Math.sqrt(_key.length) ^ 0;
-   const key = chunk(_key.split('').map(ch => ch.charCodeAt(0)), size);
-   msg = msg.padEnd(msg.length + size - msg.length % size, ' ');
+   const key = prepareKey(_key);
+   console.log(key);
    
-   return chunk(msg.split('').map(ch => ch.codePointAt(0)), size)
-      .map(m => processMsg(m, key))
-      .flatMap(r => r)
-      .map(code => String.fromCharCode(code % ALPHABET_LEN))
-      .join('');
+   return process(padMsg(msg, key[0].length), key);
 }
 
-export function decode(msg: string, _key: string): string {
-   const size = Math.sqrt(_key.length) ^ 0;
-   const key = chunk(_key.split('').map(ch => ch.charCodeAt(0)), size);
+export function decode(msg: string, key: string): string {
+   console.log(invertMat(prepareKey(key)), '=');
+   
+   return process(msg, invertMat(prepareKey(key)));
+}
 
-   return chunk(msg.split('').map(ch => ch.codePointAt(0)), size)
-      .map(m => processMsg(m, invertMat(key)))
+function process(msg: string, key: number[][]): string {
+   return chunk(prepareStr(msg), key[0].length)
+      .map(m => matMulVec(key, m))
       .flatMap(r => r)
       .map(code => Math.round(code))
-      .map(code => String.fromCharCode(code % ALPHABET_LEN))
+      .map(code => String.fromCharCode(code))
       .join('');
 }
 
-function processMsg(msg: number[], key: number[][]): number[] {
-   return matMulVec(key, msg);
+function prepareKey(key: string) {
+   const size = Math.sqrt(key.length) ^ 0;
+   return chunk(key.slice(0, size * size).split('')
+      .map(ch => ch.codePointAt(0)), size);
 }
 
-function prepareKey() {
-   
+function prepareStr(str: string): number[] {
+   return str.split('').map(ch => ch.codePointAt(0));
+}
+
+function padMsg(msg: string, size: number): string {
+   return msg.padEnd(msg.length + size - msg.length % size, ' ');
 }
