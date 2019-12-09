@@ -11,9 +11,9 @@ textarea {
    height: 120px;
    min-height: 120px;
    max-height: 350px;
-   
+
    resize: vertical;
-} 
+}
 
 .app {
    display: flex;
@@ -75,4 +75,32 @@ textarea {
 .add__field {
    width: 100%;
    padding: 1em;
+}
+
+.db__table {
+   border-collapse: collapse;
+
+   tr {
+      &:hover {
+         background-color: #ddd;
+      }
+
+      &:nth-child(even) {
+         background-color: #f2f2f2;
+      }
+   }
+
+   td,
+   th {
+      border: 1px solid #ddd;
+      padding: 0.4em 0.8em;
+   }
+
+   th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #212121;
+      color: white;
+   }
 }
