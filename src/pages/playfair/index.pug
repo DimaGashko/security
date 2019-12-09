@@ -31,9 +31,6 @@ html(lang="en")
                             label.add__label(for="add__login") Login
                             input.add__field#add__login(name="login" required)
                         li.add__item
-                            label.add__label(for="add__name") Name
-                            input.add__field#add__name(name="username" required)
-                        li.add__item
                             label.add__label(for="add__pwd") Password
                             input.add__field#add__pwd(type="password" name="pwd" required)
                         li.add__item
@@ -49,25 +46,27 @@ html(lang="en")
 
 
             script.user-tmpl(type=text/template).
+                <% if (users.length) { %>
                 <table class="db__table">
                     <thead>
                         <tr>
-                            <th>Index</th>
+                            <th>#</th>
                             <th>Login</th>
-                            <th>Name</th>
                             <th>Password</th>
                             <th>About</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% users.forEach(({ login, name, pwd, about }, index) => { %>
+                        <% users.reverse().forEach(({ login, name, pwd, about }, index) => { %>
                         <tr>
-                            <td><%= index %></td>
+                            <td><%= users.length - index %></td>
                             <td><%= login %></td>
-                            <td><%= name %></td>
                             <td><%= pwd %></td>
                             <td><%= about %></td>
                         </tr>
                         <% }); %>
                     </tbody>
                 </table>
+                <% } else { %>
+                There are no users
+                <% } %>

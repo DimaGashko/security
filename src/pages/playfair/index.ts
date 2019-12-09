@@ -8,7 +8,6 @@ import { encode, decode } from './scripts/algorithms/playfair';
 
 interface User {
    login: string;
-   name: string;
    pwd: string;
    about: string;
 }
@@ -23,7 +22,6 @@ const $userTmpl: HTMLElement = $app.querySelector('.user-tmpl')
 
 const $addForm: HTMLFormElement = $app.querySelector('.add');
 const $login: HTMLInputElement = $addForm.login;
-const $name: HTMLInputElement = $addForm.username;
 const $pwd: HTMLInputElement = $addForm.pwd;
 const $about: HTMLTextAreaElement = $addForm.about;
 
@@ -68,8 +66,7 @@ function auth() {
       return;
    }
 
-   const { name, about } = user;
-   alert(`Success!\nLogin: ${login}\nName: ${name}\nAbout: ${about}`);
+   alert(`Success!\nLogin: ${login}\nAbout: ${user.about}`);
 }
 
 function decodeUser() {
@@ -88,11 +85,15 @@ function decodeUser() {
 
 function addUser() {
    const login = $login.value.trim();
-   const name = $name.value.trim();
    const pwd = encode($pwd.value.trim(), playfairGrid);
    const about = $about.value.trim();
 
-   saveUser({ login, name, pwd, about });
+   if (users.find(({ login: l }) => login === l)) {
+      alert('User already exist');
+      return;
+   }
+
+   saveUser({ login, pwd, about });
    renderUsers();
 
    $addForm.reset();

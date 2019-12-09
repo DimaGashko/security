@@ -2908,7 +2908,6 @@ var $db = $app.querySelector('.db__content');
 var $userTmpl = $app.querySelector('.user-tmpl');
 var $addForm = $app.querySelector('.add');
 var $login = $addForm.login;
-var $name = $addForm.username;
 var $pwd = $addForm.pwd;
 var $about = $addForm.about;
 var playfairGrid = PlayfairGrid_1.default.createEnGrid(KEYWORD);
@@ -2948,9 +2947,7 @@ function auth() {
     return;
   }
 
-  var name = user.name,
-      about = user.about;
-  alert("Success!\nLogin: " + login + "\nName: " + name + "\nAbout: " + about);
+  alert("Success!\nLogin: " + login + "\nAbout: " + user.about);
 }
 
 function decodeUser() {
@@ -2971,12 +2968,19 @@ function decodeUser() {
 
 function addUser() {
   var login = $login.value.trim();
-  var name = $name.value.trim();
   var pwd = playfair_1.encode($pwd.value.trim(), playfairGrid);
   var about = $about.value.trim();
+
+  if (users.find(function (_a) {
+    var l = _a.login;
+    return login === l;
+  })) {
+    alert('User already exist');
+    return;
+  }
+
   saveUser({
     login: login,
-    name: name,
     pwd: pwd,
     about: about
   });

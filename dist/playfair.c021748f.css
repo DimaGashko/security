@@ -523,7 +523,13 @@ textarea {
   padding: 1em;
 }
 
+.db {
+  max-width: 100%;
+  overflow: auto;
+}
+
 .db__table {
+  width: 100%;
   border-collapse: collapse;
 }
 .db__table tr:hover {
