@@ -8,11 +8,12 @@ button {
 }
 
 textarea {
-   resize: vertical;
    height: 120px;
    min-height: 120px;
    max-height: 350px;
-}
+   
+   resize: vertical;
+} 
 
 .app {
    display: flex;
