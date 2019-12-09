@@ -6,6 +6,12 @@ Check it out:
 
 - [Keyboard Handwriting](https://dimagashko.github.io/security/keyboard-handwriting)
 - [Playfair Cipher](https://dimagashko.github.io/security/playfair)
+- [Hill Cipher](https://dimagashko.github.io/security/hill)
+
+Also there's *frequency character counter* in a separate repo:
+
+- GitHub: [github.com/DimaGashko/frequency-counter](https://github.com/DimaGashko/frequency-counter)
+- Check it out: [dimagashko.github.io/frequency-counter](https://dimagashko.github.io/frequency-counter)
 
 ## Langs & Techs
 
