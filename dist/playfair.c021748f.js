@@ -2934,7 +2934,24 @@ function initEvents() {
 }
 
 function auth() {
-  console.log('auth');
+  var login = prompt('Login', '');
+  var pwd = prompt('Password', '');
+  var user = users.find(function (_a) {
+    var cLogin = _a.login;
+    return login === cLogin;
+  });
+
+  if (!user) {
+    alert('User not found');
+    return;
+  }
+
+  if (playfair_1.encode(pwd, playfairGrid) !== user.pwd) {
+    alert('Wrong password!');
+    return;
+  }
+
+  alert("Success!\nLogin: " + login + "\nName: " + user.name);
 }
 
 function decodeUser() {

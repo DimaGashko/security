@@ -56,7 +56,22 @@ function initEvents() {
 }
 
 function auth() {
-   console.log('auth');
+   const login = prompt('Login', '');
+   const pwd = prompt('Password', '');
+
+   const user = users.find(({ login: cLogin }) => login === cLogin);
+
+   if (!user) {
+      alert('User not found');
+      return;
+   }
+
+   if (encode(pwd, playfairGrid) !== user.pwd) {
+      alert('Wrong password!');
+      return;
+   }
+
+   alert(`Success!\nLogin: ${login}\nName: ${user.name}`);
 }
 
 function decodeUser() {
