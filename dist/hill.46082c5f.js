@@ -85683,30 +85683,26 @@ Object.defineProperty(exports, "__esModule", {
 
 var modInv_1 = __importDefault(require("./modInv"));
 
-var det_1 = __importDefault(require("./det"));
-
 var adjoint_1 = __importDefault(require("./adjoint"));
 
+var det_1 = __importDefault(require("./det"));
+
 function modInvMat(m, mod) {
-  var invDet = modInv_1.default(Math.abs(det_1.default(m) ^ 0), mod);
-  console.log(invDet);
+  var d = Math.round(det_1.default(m));
+  var invDet = modInv_1.default(modBy(d, mod), mod);
   return adjoint_1.default(m).map(function (r) {
     return r.map(function (a) {
-      return (a + mod) % mod;
-    });
-  }).map(function (r) {
-    return r.map(function (a) {
-      return a * invDet;
-    });
-  }).map(function (r) {
-    return r.map(function (a) {
-      return a % mod;
+      return Math.round(modBy(a * invDet, mod));
     });
   });
 }
 
 exports.default = modInvMat;
-},{"./modInv":"hill/scripts/algorithms/math/modInv.ts","./det":"hill/scripts/algorithms/math/det.ts","./adjoint":"hill/scripts/algorithms/math/adjoint.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+
+function modBy(v, m) {
+  return v < 0 ? m - -v % m : v % m;
+}
+},{"./modInv":"hill/scripts/algorithms/math/modInv.ts","./adjoint":"hill/scripts/algorithms/math/adjoint.ts","./det":"hill/scripts/algorithms/math/det.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
