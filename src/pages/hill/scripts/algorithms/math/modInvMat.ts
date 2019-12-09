@@ -1,8 +1,19 @@
+import modInv from "./modInv";
+import det from "./det";
+import adjoint from "./adjoint";
+
+export default function modInvMat(m: number[][], mod: number): number[][] { 
+   const invDet = modInv(det(m), mod);
+   
+   return adjoint(m).map(r => r.map(a => (a + mod) % mod))
+      .map(r => r.map(a => a * invDet));
+   }
+
 /**
  * Find the inverse of matrix
  * Original: http://blog.acipo.com/matrix-inversion-in-javascript/
  */
-export default function invertMat(M: number[][]) {
+export  function invertMa(M: number[][]) {
    // I use Guassian Elimination to calculate the inverse:
    // (1) 'augment' the matrix (left) by the identity (on the right)
    // (2) Turn the matrix on the left into the identity by elementary row ops
@@ -98,10 +109,3 @@ export default function invertMat(M: number[][]) {
    //matrix I should be the inverse:
    return I;
 }
-
-function modInverse(a, m) {
-   a = a % m;
-   for (let x = 1; x < m; x++)
-      if ((a * x) % m == 1)
-         return x;
-} 
