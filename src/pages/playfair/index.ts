@@ -1,6 +1,20 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
-import PlayfairGrid from './algorithms/playfair/PlayfairGrid';
+
+import template from 'lodash/template';
+
+import PlayfairGrid from './scripts/algorithms/playfair/PlayfairGrid';
+import { encode } from './scripts/algorithms/playfair';
+
+import userTemplateText from './templates/users';
+
+interface User {
+   login: string;
+   name: string;
+   pwd: string;
+}
+
+const KEYWORD = 'cluster';
 
 const $app: HTMLElement = document.querySelector('.app');
 const $auth: HTMLButtonElement = $app.querySelector('.actions__auth');
@@ -12,8 +26,14 @@ const $login: HTMLInputElement = $addForm.login;
 const $name: HTMLInputElement = $addForm.username;
 const $pwd: HTMLInputElement = $addForm.pwd;
 
-const playfairGrid = PlayfairGrid.createEnGrid('cluster');
+const playfairGrid = PlayfairGrid.createEnGrid(KEYWORD);
 
+const users: User[] = ('users' in localStorage) ?
+   JSON.parse(localStorage.users) : []
+
+const userTemplate = template(userTemplateText);
+
+renderUsers();
 initEvents();
 
 function initEvents() {
@@ -37,15 +57,23 @@ function auth() {
 
 function decode() {
    console.log('decode');
-   
+
 }
 
 function addUser() {
-   const data = {
-      login: $login.value.trim(),
-      name: $name.value.trim(),
-      pwd: $pwd.value.trim(),
-   }
+   const login = $login.value.trim();
+   const name = $name.value.trim();
+   const pwd = encode($pwd.value.trim(), playfairGrid);
 
-   console.log(data);
+   saveUser({ login, name, pwd });
+   renderUsers();
+}
+
+function saveUser(user: User) {
+   users.push(user);
+   localStorage.users = JSON.stringify(users);
+}
+
+function renderUsers() {
+   $db.innerHTML = userTemplate(users);
 }
