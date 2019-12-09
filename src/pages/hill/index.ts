@@ -1,8 +1,8 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
 import { encode, decode } from './scripts/algorithms/hill';
-import matMulVec from './scripts/matMulVec';
-import invertMat from './scripts/invertMat';
+import matMulVec from './scripts/algorithms/matrix/matMulVec';
+import invertMat from './scripts/algorithms/matrix/invertMat';
 
 window.hillEncode = encode;
 window.hillDecode = decode;

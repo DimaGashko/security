@@ -1,6 +1,6 @@
 import chunk from 'lodash/chunk';
-import matMulVec from '../matMulVec';
-import invertMat from '../invertMat';
+import matMulVec from './matrix/matMulVec';
+import invertMat from './matrix/invertMat';
 
 export function encode(msg: string, _key: string): string {
    const key = prepareKey(_key);

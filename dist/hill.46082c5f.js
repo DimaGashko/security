@@ -862,7 +862,7 @@ function chunk(array, size, guard) {
 
 module.exports = chunk;
 
-},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/matMulVec.ts":[function(require,module,exports) {
+},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/algorithms/matrix/matMulVec.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -893,7 +893,7 @@ function matMulVec(a, b) {
 }
 
 exports.default = matMulVec;
-},{}],"hill/scripts/invertMat.ts":[function(require,module,exports) {
+},{}],"hill/scripts/algorithms/matrix/invertMat.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1253,9 +1253,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var chunk_1 = __importDefault(require("lodash/chunk"));
 
-var matMulVec_1 = __importDefault(require("../matMulVec"));
+var matMulVec_1 = __importDefault(require("./matrix/matMulVec"));
 
-var invertMat_1 = __importDefault(require("../invertMat"));
+var invertMat_1 = __importDefault(require("./matrix/invertMat"));
 
 function encode(msg, _key) {
   var key = prepareKey(_key);
@@ -1300,7 +1300,7 @@ function prepareStr(str) {
 function padMsg(msg, size) {
   return msg.padEnd(msg.length + size - msg.length % size, ' ');
 }
-},{"lodash/chunk":"../../node_modules/lodash/chunk.js","../matMulVec":"hill/scripts/matMulVec.ts","../invertMat":"hill/scripts/invertMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js","./matrix/matMulVec":"hill/scripts/algorithms/matrix/matMulVec.ts","./matrix/invertMat":"hill/scripts/algorithms/matrix/invertMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1319,9 +1319,9 @@ require("./index.scss");
 
 var hill_1 = require("./scripts/algorithms/hill");
 
-var matMulVec_1 = __importDefault(require("./scripts/matMulVec"));
+var matMulVec_1 = __importDefault(require("./scripts/algorithms/matrix/matMulVec"));
 
-var invertMat_1 = __importDefault(require("./scripts/invertMat"));
+var invertMat_1 = __importDefault(require("./scripts/algorithms/matrix/invertMat"));
 
 window.hillEncode = hill_1.encode;
 window.hillDecode = hill_1.decode;
@@ -1338,7 +1338,7 @@ console.log(hill_1.decode(encoded, key));
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/matMulVec":"hill/scripts/matMulVec.ts","./scripts/invertMat":"hill/scripts/invertMat.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/algorithms/matrix/matMulVec":"hill/scripts/algorithms/matrix/matMulVec.ts","./scripts/algorithms/matrix/invertMat":"hill/scripts/algorithms/matrix/invertMat.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
