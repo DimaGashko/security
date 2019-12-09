@@ -2949,7 +2949,7 @@ function decodeUser() {
     return;
   }
 
-  var pwd = playfair_1.encode(user.pwd, playfairGrid);
+  var pwd = playfair_1.decode(user.pwd, playfairGrid);
   alert("Login: " + login + "\nEncoded password: " + user.pwd + "\n" + ("Decoded password: " + pwd));
 }
 

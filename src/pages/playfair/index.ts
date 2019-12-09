@@ -68,7 +68,7 @@ function decodeUser() {
       return;
    }
 
-   const pwd = encode(user.pwd, playfairGrid);
+   const pwd = decode(user.pwd, playfairGrid);
    alert(`Login: ${login}\nEncoded password: ${user.pwd}\n` +
       `Decoded password: ${pwd}`);
 }
