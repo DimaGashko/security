@@ -2476,21 +2476,242 @@ function template(string, options, guard) {
 
 module.exports = template;
 
-},{"./assignInWith":"../../node_modules/lodash/assignInWith.js","./attempt":"../../node_modules/lodash/attempt.js","./_baseValues":"../../node_modules/lodash/_baseValues.js","./_customDefaultsAssignIn":"../../node_modules/lodash/_customDefaultsAssignIn.js","./_escapeStringChar":"../../node_modules/lodash/_escapeStringChar.js","./isError":"../../node_modules/lodash/isError.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./keys":"../../node_modules/lodash/keys.js","./_reInterpolate":"../../node_modules/lodash/_reInterpolate.js","./templateSettings":"../../node_modules/lodash/templateSettings.js","./toString":"../../node_modules/lodash/toString.js"}],"playfair/scripts/algorithms/playfair/_utils.ts":[function(require,module,exports) {
-"use strict";
+},{"./assignInWith":"../../node_modules/lodash/assignInWith.js","./attempt":"../../node_modules/lodash/attempt.js","./_baseValues":"../../node_modules/lodash/_baseValues.js","./_customDefaultsAssignIn":"../../node_modules/lodash/_customDefaultsAssignIn.js","./_escapeStringChar":"../../node_modules/lodash/_escapeStringChar.js","./isError":"../../node_modules/lodash/isError.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./keys":"../../node_modules/lodash/keys.js","./_reInterpolate":"../../node_modules/lodash/_reInterpolate.js","./templateSettings":"../../node_modules/lodash/templateSettings.js","./toString":"../../node_modules/lodash/toString.js"}],"../../node_modules/lodash/_baseSlice.js":[function(require,module,exports) {
+/**
+ * The base implementation of `_.slice` without an iteratee call guard.
+ *
+ * @private
+ * @param {Array} array The array to slice.
+ * @param {number} [start=0] The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the slice of `array`.
+ */
+function baseSlice(array, start, end) {
+  var index = -1,
+      length = array.length;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = end > length ? length : end;
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
 
-function chunk(arr, size) {
-  return new Array(Math.ceil(arr.length / size)).fill(0).map(function (_, i) {
-    return arr.slice(i * size, (i + 1) * size);
-  });
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
 }
 
-exports.default = chunk;
-},{}],"playfair/scripts/algorithms/playfair/PlayfairGrid.ts":[function(require,module,exports) {
+module.exports = baseSlice;
+
+},{}],"../../node_modules/lodash/toNumber.js":[function(require,module,exports) {
+var isObject = require('./isObject'),
+    isSymbol = require('./isSymbol');
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = toNumber;
+
+},{"./isObject":"../../node_modules/lodash/isObject.js","./isSymbol":"../../node_modules/lodash/isSymbol.js"}],"../../node_modules/lodash/toFinite.js":[function(require,module,exports) {
+var toNumber = require('./toNumber');
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308;
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
+}
+
+module.exports = toFinite;
+
+},{"./toNumber":"../../node_modules/lodash/toNumber.js"}],"../../node_modules/lodash/toInteger.js":[function(require,module,exports) {
+var toFinite = require('./toFinite');
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3.2);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3.2');
+ * // => 3
+ */
+function toInteger(value) {
+  var result = toFinite(value),
+      remainder = result % 1;
+
+  return result === result ? (remainder ? result - remainder : result) : 0;
+}
+
+module.exports = toInteger;
+
+},{"./toFinite":"../../node_modules/lodash/toFinite.js"}],"../../node_modules/lodash/chunk.js":[function(require,module,exports) {
+var baseSlice = require('./_baseSlice'),
+    isIterateeCall = require('./_isIterateeCall'),
+    toInteger = require('./toInteger');
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeCeil = Math.ceil,
+    nativeMax = Math.max;
+
+/**
+ * Creates an array of elements split into groups the length of `size`.
+ * If `array` can't be split evenly, the final chunk will be the remaining
+ * elements.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Array
+ * @param {Array} array The array to process.
+ * @param {number} [size=1] The length of each chunk
+ * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+ * @returns {Array} Returns the new array of chunks.
+ * @example
+ *
+ * _.chunk(['a', 'b', 'c', 'd'], 2);
+ * // => [['a', 'b'], ['c', 'd']]
+ *
+ * _.chunk(['a', 'b', 'c', 'd'], 3);
+ * // => [['a', 'b', 'c'], ['d']]
+ */
+function chunk(array, size, guard) {
+  if ((guard ? isIterateeCall(array, size, guard) : size === undefined)) {
+    size = 1;
+  } else {
+    size = nativeMax(toInteger(size), 0);
+  }
+  var length = array == null ? 0 : array.length;
+  if (!length || size < 1) {
+    return [];
+  }
+  var index = 0,
+      resIndex = 0,
+      result = Array(nativeCeil(length / size));
+
+  while (index < length) {
+    result[resIndex++] = baseSlice(array, index, (index += size));
+  }
+  return result;
+}
+
+module.exports = chunk;
+
+},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"playfair/scripts/algorithms/playfair/PlayfairGrid.ts":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -2517,7 +2738,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _utils_1 = __importDefault(require("./_utils"));
+var chunk_1 = __importDefault(require("lodash/chunk"));
 
 var PlayfairGrid =
 /** @class */
@@ -2549,8 +2770,12 @@ function () {
     return this.processPair(pair, 'decode');
   };
 
+  PlayfairGrid.prototype.getAlphabet = function () {
+    return this.alphabet.slice();
+  };
+
   PlayfairGrid.prototype.create = function () {
-    this.grid = _utils_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
+    this.grid = chunk_1.default(this.prepareAlphabet(this.code, this.alphabet), this.width);
     this.gridMap = this.createGridMap(this.grid);
   };
 
@@ -2609,7 +2834,7 @@ function () {
 }();
 
 exports.default = PlayfairGrid;
-},{"./_utils":"playfair/scripts/algorithms/playfair/_utils.ts"}],"playfair/scripts/algorithms/playfair/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js"}],"playfair/scripts/algorithms/playfair/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2622,7 +2847,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _utils_1 = __importDefault(require("./_utils"));
+var chunk_1 = __importDefault(require("lodash/chunk"));
 
 function encode(msg, grid) {
   return prepareMsg(msg).map(function (p) {
@@ -2645,9 +2870,9 @@ function decode(msg, grid) {
 exports.decode = decode;
 
 function prepareMsg(msg) {
-  return _utils_1.default(msg.toLowerCase().replace(/\s/g, '').split(''), 2);
+  return chunk_1.default(msg.toLowerCase().replace(/\s/g, '').split(''), 2);
 }
-},{"./_utils":"playfair/scripts/algorithms/playfair/_utils.ts"}],"playfair/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js"}],"playfair/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2718,6 +2943,8 @@ function addUser() {
     pwd: pwd
   });
   renderUsers();
+  $addForm.reset();
+  $login.focus();
 }
 
 function saveUser(user) {

@@ -1,5 +1,5 @@
 import PlayfairGrid from "./PlayfairGrid";
-import chunk from "./_utils";
+import chunk from "lodash/chunk";
 
 export function encode(msg: string, grid: PlayfairGrid): string {
    return prepareMsg(msg).map(p => grid.encodePair(p)).flatMap(s => s).join('');

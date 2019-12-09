@@ -1,4 +1,4 @@
-import chunk from "./_utils";
+import chunk from 'lodash/chunk';
 
 type GridMap = Map<string, { i: number, j: number }>
 
@@ -31,6 +31,10 @@ export default class PlayfairGrid {
 
    public decodePair(pair: string[]): string[] {
       return this.processPair(pair, 'decode');
+   }
+
+   public getAlphabet() {
+      return this.alphabet.slice();
    }
 
    private create() {

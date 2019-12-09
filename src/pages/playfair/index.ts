@@ -67,6 +67,9 @@ function addUser() {
 
    saveUser({ login, name, pwd });
    renderUsers();
+
+   $addForm.reset();
+   $login.focus();
 }
 
 function saveUser(user: User) {
