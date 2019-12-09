@@ -11,6 +11,6 @@ export default function modInvMat(m: number[][], mod: number): number[][] {
    }));
 }
 
-function modBy(v: number, m: number) {
+export function modBy(v: number, m: number) {
    return (v < 0) ? m - (-v % m) : v % m;
 }

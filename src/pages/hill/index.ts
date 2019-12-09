@@ -14,9 +14,9 @@ window.det = det;
 
 const $app: HTMLElement = document.querySelector('.app');
 
-const key = 'do you love code';
+const key = 'Do You Love Code So Much?';
 
-const msg = `Harry і їы`;
+const msg = `濝亯Ỉ뵔킝㋔㗅㓋㐰㙔`;
 
 const encoded = encode(msg, key);
 

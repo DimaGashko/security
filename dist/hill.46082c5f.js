@@ -85702,6 +85702,8 @@ exports.default = modInvMat;
 function modBy(v, m) {
   return v < 0 ? m - -v % m : v % m;
 }
+
+exports.modBy = modBy;
 },{"./modInv":"hill/scripts/algorithms/math/modInv.ts","./adjoint":"hill/scripts/algorithms/math/adjoint.ts","./det":"hill/scripts/algorithms/math/det.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
@@ -85939,23 +85941,18 @@ function encode(msg, _key) {
 exports.encode = encode;
 
 function decode(msg, key) {
-  return process(msg, modInvMat_1.default(prepareKey(key)));
+  return process(msg, modInvMat_1.default(prepareKey(key), Math.pow(2, 16)));
 }
 
 exports.decode = decode;
 
 function process(msg, key) {
-  return chunk_1.default(prepareStr(msg), key[0].length).map(function (m) {
-    return matMulVec_1.default(key, m).map(function (c) {
-      return c % Math.pow(2, 16);
-    });
+  var codes = chunk_1.default(prepareStr(msg), key[0].length).map(function (m) {
+    return matMulVec_1.default(key, m);
   }).flatMap(function (r) {
     return r;
-  }).map(function (code) {
-    return Math.round(code);
-  }).map(function (code) {
-    return String.fromCharCode(code);
-  }).join('');
+  });
+  return String.fromCharCode.apply(String, codes);
 }
 
 function prepareKey(key) {
@@ -86005,8 +86002,8 @@ window.mulV = matMulVec_1.default;
 window.inv = modInvMat_1.default;
 window.det = det_1.default;
 var $app = document.querySelector('.app');
-var key = 'do you love code';
-var msg = "Harry \u0456 \u0457\u044B";
+var key = 'Do You Love Code So Much?';
+var msg = "\u6FDD\u4EAF\u1EC8\uBD54\uD09D\u32D4\u35C5\u34CB\u3430\u3654";
 var encoded = hill_1.encode(msg, key);
 console.log(msg);
 console.log(encoded);

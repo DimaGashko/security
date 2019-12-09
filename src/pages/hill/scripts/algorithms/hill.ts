@@ -1,24 +1,21 @@
 import chunk from 'lodash/chunk';
 import matMulVec from './math/matMulVec';
-import invertMat from './math/modInvMat';
+import modInvMat, { modBy } from './math/modInvMat';
 
 export function encode(msg: string, _key: string): string {
    const key = prepareKey(_key);
-   
    return process(padMsg(msg, key[0].length), key);
 }
 
 export function decode(msg: string, key: string): string {
-   return process(msg, invertMat(prepareKey(key)));
+   return process(msg, modInvMat(prepareKey(key), 2 ** 16));
 }
 
 function process(msg: string, key: number[][]): string {
-   return chunk(prepareStr(msg), key[0].length)
-      .map(m => matMulVec(key, m).map(c => c % 2 ** 16))
-      .flatMap(r => r)
-      .map(code => Math.round(code))
-      .map(code => String.fromCharCode(code))
-      .join('');
+   const codes = chunk(prepareStr(msg), key[0].length)
+      .map(m => matMulVec(key, m)).flatMap(r => r);
+
+   return String.fromCharCode(...codes);
 }
 
 function prepareKey(key: string) {
