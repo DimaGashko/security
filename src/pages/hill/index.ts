@@ -1,13 +1,7 @@
 import 'normalize.scss/normalize.scss';
 import './index.scss';
-import { encode, decode } from './scripts/algorithms/hill';
-import { matMulVec, modInvMat, det } from './scripts/algorithms/math';
-
-window.hillEncode = encode;
-window.hillDecode = decode;
-window.mulV = matMulVec;
-window.inv = modInvMat;
-window.det = det;
+import { encode, decode } from './scripts/hill';
+import { matMulVec, modInvMat, det } from './scripts/math';
 
 const $app: HTMLElement = document.querySelector('.app');
 

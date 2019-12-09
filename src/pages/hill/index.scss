@@ -2,3 +2,32 @@
 @import '../../styles/base';
 @import '../../styles/header';
 @import '../../styles/main';
+
+.app {
+   max-width: 960px;
+
+   margin: 0 auto;
+   padding: 1.5rem 5vw;
+}
+
+input,
+textarea {
+   width: 100%;
+   padding: 1em;
+}
+
+textarea {
+   height: 150px;
+   min-height: 120px;
+   max-height: 350px;
+
+   resize: vertical;
+}
+
+h1 {
+   margin-top: 1em;
+
+   &:first-child {
+      margin-top: 0;
+   }
+}

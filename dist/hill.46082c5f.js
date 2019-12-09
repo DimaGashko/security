@@ -862,7 +862,7 @@ function chunk(array, size, guard) {
 
 module.exports = chunk;
 
-},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/algorithms/math.ts":[function(require,module,exports) {
+},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/math.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1174,7 +1174,7 @@ process.chdir = function (dir) {
 process.umask = function () {
   return 0;
 };
-},{}],"hill/scripts/algorithms/hill.ts":[function(require,module,exports) {
+},{}],"hill/scripts/hill.ts":[function(require,module,exports) {
 
 "use strict";
 
@@ -1230,7 +1230,7 @@ function prepareStr(str) {
 function padMsg(msg, size) {
   return msg.padEnd(msg.length + size - msg.length % size, ' ');
 }
-},{"lodash/chunk":"../../node_modules/lodash/chunk.js","./math":"hill/scripts/algorithms/math.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js","./math":"hill/scripts/math.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1241,15 +1241,8 @@ require("normalize.scss/normalize.scss");
 
 require("./index.scss");
 
-var hill_1 = require("./scripts/algorithms/hill");
+var hill_1 = require("./scripts/hill");
 
-var math_1 = require("./scripts/algorithms/math");
-
-window.hillEncode = hill_1.encode;
-window.hillDecode = hill_1.decode;
-window.mulV = math_1.matMulVec;
-window.inv = math_1.modInvMat;
-window.det = math_1.det;
 var $app = document.querySelector('.app');
 var key = 'do_you_love_code_so_much?';
 var msg = "Harry Potter and the Philosophers Stone\n\nChapter 1 The Boy Who Lived\n\nMr. and Mrs. Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.\n\nMr. Dursley was the director of a firm called Grunnings, which made drills. He was a big, beefy man with hardly any neck, although he did have a very large mustache. Mrs. Dursley was thin and blonde and had nearly twice the usual amount of neck, which came in very useful as she spent so much of her time craning over garden fences, spying on the neighbors. The Dursleys had a small son called Dudley and in their opinion there was no finer boy anywhere.\n\nThe Dursleys had everything they wanted, but they also had a secret, and their greatest fear was that somebody would discover it. They didn't think they could bear it if anyone found out about the Potters. Mrs. Potter was Mrs. Dursley's sister, but they hadn't met for several years; in fact, Mrs. Dursley pretended she didn't have a sister, because her sister and her good-for-nothing husband were as unDursleyish as it was possible to be. The Dursleys shuddered to think what the neighbors would say if the Potters arrived in the street. The Dursleys knew that the Potters had a small son, too, but they had never even seen him. This boy was another good reason for keeping the Potters away; they didn't want Dudley mixing with a child like that.\n\nType your text here...";
@@ -1261,7 +1254,7 @@ console.log(hill_1.decode(encoded, 'do_you_love_code_so_much?'));
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/algorithms/math":"hill/scripts/algorithms/math.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/hill":"hill/scripts/hill.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1289,7 +1282,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37743" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32789" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
