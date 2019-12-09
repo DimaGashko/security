@@ -862,7 +862,7 @@ function chunk(array, size, guard) {
 
 module.exports = chunk;
 
-},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/algorithms/matrix/matMulVec.ts":[function(require,module,exports) {
+},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/algorithms/math/matMulVec.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -893,18 +893,129 @@ function matMulVec(a, b) {
 }
 
 exports.default = matMulVec;
-},{}],"hill/scripts/algorithms/matrix/invertMat.ts":[function(require,module,exports) {
+},{}],"hill/scripts/algorithms/math/modInv.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+function modInv(a, m) {
+  a = a % m;
+
+  for (var x = 1; x < m; x++) {
+    if (a * x % m == 1) return x;
+  }
+
+  return NaN;
+}
+
+exports.default = modInv;
+},{}],"hill/scripts/algorithms/math/det.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function det(m) {}
+
+exports.default = det;
+},{}],"hill/scripts/algorithms/math/confractor.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function confractor(m, i, j) {}
+
+exports.default = confractor;
+},{}],"hill/scripts/algorithms/math/transpose.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function transpose(matrix) {
+  return matrix.map(function (r, i) {
+    return r.map(function (v, j) {
+      return matrix[j][i];
+    });
+  });
+}
+
+exports.default = transpose;
+},{}],"hill/scripts/algorithms/math/adjoint.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var confractor_1 = __importDefault(require("./confractor"));
+
+var transpose_1 = __importDefault(require("./transpose"));
+
+function adjoint(m) {
+  return transpose_1.default(m.map(function (r, i) {
+    return r.map(function (_, j) {
+      return Math.pow(-1, i + j) * confractor_1.default(m, i, j);
+    });
+  }));
+}
+
+exports.default = adjoint;
+},{"./confractor":"hill/scripts/algorithms/math/confractor.ts","./transpose":"hill/scripts/algorithms/math/transpose.ts"}],"hill/scripts/algorithms/math/modInvMat.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var modInv_1 = __importDefault(require("./modInv"));
+
+var det_1 = __importDefault(require("./det"));
+
+var adjoint_1 = __importDefault(require("./adjoint"));
+
+function modInvMat(m, mod) {
+  var invDet = modInv_1.default(det_1.default(m), mod);
+  return adjoint_1.default(m).map(function (r) {
+    return r.map(function (a) {
+      return (a + mod) % mod;
+    });
+  }).map(function (r) {
+    return r.map(function (a) {
+      return a * invDet;
+    });
+  }).map(function (r) {
+    return r.map(function (a) {
+      return a % mod;
+    });
+  });
+}
+
+exports.default = modInvMat;
 /**
  * Find the inverse of matrix
  * Original: http://blog.acipo.com/matrix-inversion-in-javascript/
  */
 
-function invertMat(M) {
+function invertMa(M) {
   // I use Guassian Elimination to calculate the inverse:
   // (1) 'augment' the matrix (left) by the identity (on the right)
   // (2) Turn the matrix on the left into the identity by elementary row ops
@@ -1019,16 +1130,8 @@ function invertMat(M) {
   return I;
 }
 
-exports.default = invertMat;
-
-function modInverse(a, m) {
-  a = a % m;
-
-  for (var x = 1; x < m; x++) {
-    if (a * x % m == 1) return x;
-  }
-}
-},{}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+exports.invertMa = invertMa;
+},{"./modInv":"hill/scripts/algorithms/math/modInv.ts","./det":"hill/scripts/algorithms/math/det.ts","./adjoint":"hill/scripts/algorithms/math/adjoint.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -1253,9 +1356,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var chunk_1 = __importDefault(require("lodash/chunk"));
 
-var matMulVec_1 = __importDefault(require("./matrix/matMulVec"));
+var matMulVec_1 = __importDefault(require("./math/matMulVec"));
 
-var invertMat_1 = __importDefault(require("./matrix/invertMat"));
+var modInvMat_1 = __importDefault(require("./math/modInvMat"));
 
 function encode(msg, _key) {
   var key = prepareKey(_key);
@@ -1265,7 +1368,7 @@ function encode(msg, _key) {
 exports.encode = encode;
 
 function decode(msg, key) {
-  return process(msg, invertMat_1.default(prepareKey(key)));
+  return process(msg, modInvMat_1.default(prepareKey(key)));
 }
 
 exports.decode = decode;
@@ -1300,7 +1403,7 @@ function prepareStr(str) {
 function padMsg(msg, size) {
   return msg.padEnd(msg.length + size - msg.length % size, ' ');
 }
-},{"lodash/chunk":"../../node_modules/lodash/chunk.js","./matrix/matMulVec":"hill/scripts/algorithms/matrix/matMulVec.ts","./matrix/invertMat":"hill/scripts/algorithms/matrix/invertMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
+},{"lodash/chunk":"../../node_modules/lodash/chunk.js","./math/matMulVec":"hill/scripts/algorithms/math/matMulVec.ts","./math/modInvMat":"hill/scripts/algorithms/math/modInvMat.ts","process":"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js"}],"hill/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1319,14 +1422,14 @@ require("./index.scss");
 
 var hill_1 = require("./scripts/algorithms/hill");
 
-var matMulVec_1 = __importDefault(require("./scripts/algorithms/matrix/matMulVec"));
+var matMulVec_1 = __importDefault(require("./scripts/algorithms/math/matMulVec"));
 
-var invertMat_1 = __importDefault(require("./scripts/algorithms/matrix/invertMat"));
+var modInvMat_1 = __importDefault(require("./scripts/algorithms/math/modInvMat"));
 
 window.hillEncode = hill_1.encode;
 window.hillDecode = hill_1.decode;
 window.mulV = matMulVec_1.default;
-window.inv = invertMat_1.default;
+window.inv = modInvMat_1.default;
 var $app = document.querySelector('.app');
 var key = 'do you love code';
 var msg = "Harry \u0456 \u0457\u044B";
@@ -1338,7 +1441,7 @@ console.log(hill_1.decode(encoded, key));
 initEvents();
 
 function initEvents() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/algorithms/matrix/matMulVec":"hill/scripts/algorithms/matrix/matMulVec.ts","./scripts/algorithms/matrix/invertMat":"hill/scripts/algorithms/matrix/invertMat.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","./scripts/algorithms/hill":"hill/scripts/algorithms/hill.ts","./scripts/algorithms/math/matMulVec":"hill/scripts/algorithms/math/matMulVec.ts","./scripts/algorithms/math/modInvMat":"hill/scripts/algorithms/math/modInvMat.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
