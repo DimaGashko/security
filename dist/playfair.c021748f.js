@@ -2900,13 +2900,12 @@ var PlayfairGrid_1 = __importDefault(require("./scripts/algorithms/playfair/Play
 
 var playfair_1 = require("./scripts/algorithms/playfair");
 
-var users_1 = __importDefault(require("./templates/users"));
-
 var KEYWORD = 'cluster';
 var $app = document.querySelector('.app');
 var $auth = $app.querySelector('.actions__auth');
 var $decode = $app.querySelector('.actions__decode');
 var $db = $app.querySelector('.db__content');
+var $userTmpl = $app.querySelector('.user-tmpl');
 var $addForm = $app.querySelector('.add');
 var $login = $addForm.login;
 var $name = $addForm.username;
@@ -2914,7 +2913,7 @@ var $pwd = $addForm.pwd;
 var $about = $addForm.about;
 var playfairGrid = PlayfairGrid_1.default.createEnGrid(KEYWORD);
 var users = 'users' in localStorage ? JSON.parse(localStorage.users) : [];
-var userTemplate = template_1.default(users_1.default);
+var userTemplate = template_1.default($userTmpl.innerHTML);
 renderUsers();
 initEvents();
 
@@ -2992,9 +2991,11 @@ function saveUser(user) {
 }
 
 function renderUsers() {
-  $db.innerHTML = userTemplate(users);
+  $db.innerHTML = userTemplate({
+    users: users
+  });
 }
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","lodash/template":"../../node_modules/lodash/template.js","./scripts/algorithms/playfair/PlayfairGrid":"playfair/scripts/algorithms/playfair/PlayfairGrid.ts","./scripts/algorithms/playfair":"playfair/scripts/algorithms/playfair/index.ts","./templates/users":"playfair/templates/users.pug"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"playfair/index.scss","lodash/template":"../../node_modules/lodash/template.js","./scripts/algorithms/playfair/PlayfairGrid":"playfair/scripts/algorithms/playfair/PlayfairGrid.ts","./scripts/algorithms/playfair":"playfair/scripts/algorithms/playfair/index.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3022,7 +3023,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41137" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46293" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -3198,96 +3199,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js":[function(require,module,exports) {
-var getBundleURL = require('./bundle-url').getBundleURL;
-
-function loadBundlesLazy(bundles) {
-  if (!Array.isArray(bundles)) {
-    bundles = [bundles];
-  }
-
-  var id = bundles[bundles.length - 1];
-
-  try {
-    return Promise.resolve(require(id));
-  } catch (err) {
-    if (err.code === 'MODULE_NOT_FOUND') {
-      return new LazyPromise(function (resolve, reject) {
-        loadBundles(bundles.slice(0, -1)).then(function () {
-          return require(id);
-        }).then(resolve, reject);
-      });
-    }
-
-    throw err;
-  }
-}
-
-function loadBundles(bundles) {
-  return Promise.all(bundles.map(loadBundle));
-}
-
-var bundleLoaders = {};
-
-function registerBundleLoader(type, loader) {
-  bundleLoaders[type] = loader;
-}
-
-module.exports = exports = loadBundlesLazy;
-exports.load = loadBundles;
-exports.register = registerBundleLoader;
-var bundles = {};
-
-function loadBundle(bundle) {
-  var id;
-
-  if (Array.isArray(bundle)) {
-    id = bundle[1];
-    bundle = bundle[0];
-  }
-
-  if (bundles[bundle]) {
-    return bundles[bundle];
-  }
-
-  var type = (bundle.substring(bundle.lastIndexOf('.') + 1, bundle.length) || bundle).toLowerCase();
-  var bundleLoader = bundleLoaders[type];
-
-  if (bundleLoader) {
-    return bundles[bundle] = bundleLoader(getBundleURL() + bundle).then(function (resolved) {
-      if (resolved) {
-        module.bundle.register(id, resolved);
-      }
-
-      return resolved;
-    }).catch(function (e) {
-      delete bundles[bundle];
-      throw e;
-    });
-  }
-}
-
-function LazyPromise(executor) {
-  this.executor = executor;
-  this.promise = null;
-}
-
-LazyPromise.prototype.then = function (onSuccess, onError) {
-  if (this.promise === null) this.promise = new Promise(this.executor);
-  return this.promise.then(onSuccess, onError);
-};
-
-LazyPromise.prototype.catch = function (onError) {
-  if (this.promise === null) this.promise = new Promise(this.executor);
-  return this.promise.catch(onError);
-};
-},{"./bundle-url":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/html-loader.js":[function(require,module,exports) {
-module.exports = function loadHTMLBundle(bundle) {
-  return fetch(bundle).then(function (res) {
-    return res.text();
-  });
-};
-},{}],0:[function(require,module,exports) {
-var b=require("../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("html",require("../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/html-loader.js"));b.load([["users.58854639.html","playfair/templates/users.pug"]]).then(function(){require("playfair/index.ts");});
-},{}]},{},["../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
+},{}]},{},["../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","playfair/index.ts"], null)
 //# sourceMappingURL=/playfair.c021748f.js.map

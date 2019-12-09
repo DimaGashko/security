@@ -6,8 +6,6 @@ import template from 'lodash/template';
 import PlayfairGrid from './scripts/algorithms/playfair/PlayfairGrid';
 import { encode, decode } from './scripts/algorithms/playfair';
 
-import userTemplateText from './templates/users';
-
 interface User {
    login: string;
    name: string;
@@ -21,6 +19,7 @@ const $app: HTMLElement = document.querySelector('.app');
 const $auth: HTMLButtonElement = $app.querySelector('.actions__auth');
 const $decode: HTMLButtonElement = $app.querySelector('.actions__decode');
 const $db: HTMLElement = $app.querySelector('.db__content');
+const $userTmpl: HTMLElement = $app.querySelector('.user-tmpl')
 
 const $addForm: HTMLFormElement = $app.querySelector('.add');
 const $login: HTMLInputElement = $addForm.login;
@@ -33,7 +32,7 @@ const playfairGrid = PlayfairGrid.createEnGrid(KEYWORD);
 const users: User[] = ('users' in localStorage) ?
    JSON.parse(localStorage.users) : []
 
-const userTemplate = template(userTemplateText);
+const userTemplate = template($userTmpl.innerHTML);
 
 renderUsers();
 initEvents();
@@ -106,5 +105,5 @@ function saveUser(user: User) {
 }
 
 function renderUsers() {
-   $db.innerHTML = userTemplate(users);
+   $db.innerHTML = userTemplate({ users });
 }

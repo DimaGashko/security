@@ -28,7 +28,7 @@ html(lang="en")
 
                     ul.add__list
                         li.add__item
-                            label.add__label(for="add__login") Login/Email
+                            label.add__label(for="add__login") Login
                             input.add__field#add__login(name="login" required)
                         li.add__item
                             label.add__label(for="add__name") Name
@@ -46,3 +46,10 @@ html(lang="en")
                 h2.title Users
 
                 .db__content There are no users
+
+
+            script.user-tmpl(type=text/template).
+                <% users.forEach(({ login, name, pwd, about }) => { %>
+                    <p><%= login %><p>
+                <% }); %>
+            
