@@ -2902,6 +2902,9 @@ var playfair_1 = require("./scripts/algorithms/playfair");
 
 var users_1 = __importDefault(require("./templates/users"));
 
+window.PlayfairGrid = PlayfairGrid_1.default;
+window.e = playfair_1.encode;
+window.d = playfair_1.decode;
 var KEYWORD = 'cluster';
 var $app = document.querySelector('.app');
 var $auth = $app.querySelector('.actions__auth');
@@ -2922,7 +2925,7 @@ function initEvents() {
     auth();
   });
   $decode.addEventListener('click', function () {
-    decode();
+    decodeUser();
   });
   $addForm.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -2934,8 +2937,20 @@ function auth() {
   console.log('auth');
 }
 
-function decode() {
-  console.log('decode');
+function decodeUser() {
+  var login = prompt('Login', '');
+  var user = users.find(function (_a) {
+    var cLogin = _a.login;
+    return login === cLogin;
+  });
+
+  if (!user) {
+    alert('User not found');
+    return;
+  }
+
+  var pwd = playfair_1.encode(user.pwd, playfairGrid);
+  alert("Login: " + login + "\nEncoded password: " + user.pwd + "\n" + ("Decoded password: " + pwd));
 }
 
 function addUser() {

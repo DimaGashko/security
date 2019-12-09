@@ -4,9 +4,13 @@ import './index.scss';
 import template from 'lodash/template';
 
 import PlayfairGrid from './scripts/algorithms/playfair/PlayfairGrid';
-import { encode } from './scripts/algorithms/playfair';
+import { encode, decode } from './scripts/algorithms/playfair';
 
 import userTemplateText from './templates/users';
+
+window.PlayfairGrid = PlayfairGrid;
+window.e = encode;
+window.d = decode;
 
 interface User {
    login: string;
@@ -42,7 +46,7 @@ function initEvents() {
    });
 
    $decode.addEventListener('click', () => {
-      decode();
+      decodeUser();
    });
 
    $addForm.addEventListener('submit', (event) => {
@@ -55,9 +59,18 @@ function auth() {
    console.log('auth');
 }
 
-function decode() {
-   console.log('decode');
+function decodeUser() {
+   const login = prompt('Login', '');
+   const user = users.find(({ login: cLogin }) => login === cLogin);
 
+   if (!user) {
+      alert('User not found');
+      return;
+   }
+
+   const pwd = encode(user.pwd, playfairGrid);
+   alert(`Login: ${login}\nEncoded password: ${user.pwd}\n` +
+      `Decoded password: ${pwd}`);
 }
 
 function addUser() {
