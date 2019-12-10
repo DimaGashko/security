@@ -2,10 +2,16 @@ import expMod from "./expMod";
 
 /**
  * Miller-Rabin Primality Test
+ * @
  * @returns true if n is **probably** prime and 
  *    false if n is definitely not prime
  */
 export default function rabinMillersCheck(n: number): boolean {
+   n = Math.abs(n);
+   
+   if (n < 2) return false;
+   if (n == 2) return true;
+
    const a = 2;
    let k = 1;
 
@@ -19,11 +25,13 @@ export default function rabinMillersCheck(n: number): boolean {
    if (b === 1 || b === n - 1) {
       return true;
    }
-   
-   while (true) {
+
+   for (let i = 0; i < k; i++) {
       b = (b * b) % n;
       
       if (b === 1) return false;
       if (b === n - 1) return true;
    }
+
+   return false;
 }  

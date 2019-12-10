@@ -241,12 +241,16 @@ Object.defineProperty(exports, "__esModule", {
 var expMod_1 = __importDefault(require("./expMod"));
 /**
  * Miller-Rabin Primality Test
+ * @
  * @returns true if n is **probably** prime and
  *    false if n is definitely not prime
  */
 
 
 function rabinMillersCheck(n) {
+  n = Math.abs(n);
+  if (n < 2) return false;
+  if (n == 2) return true;
   var a = 2;
   var k = 1;
 
@@ -261,11 +265,13 @@ function rabinMillersCheck(n) {
     return true;
   }
 
-  while (true) {
+  for (var i = 0; i < k; i++) {
     b = b * b % n;
     if (b === 1) return false;
     if (b === n - 1) return true;
   }
+
+  return false;
 }
 
 exports.default = rabinMillersCheck;
@@ -340,11 +346,14 @@ var expMod_1 = __importDefault(require("./scripts/expMod"));
 
 var rabinMillersCheck_1 = __importDefault(require("./scripts/rabinMillersCheck"));
 
+var smallPrimes_1 = __importDefault(require("./scripts/smallPrimes"));
+
 printHello(); //gen();
 
 mod();
 window.mod = expMod_1.default;
 window.rabinMillersCheck = rabinMillersCheck_1.default;
+window.primes = smallPrimes_1.default; //smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
 
 function gen() {
   var n = genPrime_1.default();
@@ -354,7 +363,7 @@ function gen() {
 function mod() {}
 
 function printHello() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts","./scripts/smallPrimes":"prime/scripts/smallPrimes.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -382,7 +391,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32949" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43423" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
