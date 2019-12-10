@@ -36,6 +36,8 @@ function rabinMillersCheck(n): boolean {
    k = prevK;
    m = prevM;
 
+   let a = 2;
+
    console.log(n, k, m);
 
    return test1(n);

@@ -258,10 +258,34 @@ function rabinMillersCheck(n) {
 
   k = prevK;
   m = prevM;
+  var a = 2;
   console.log(n, k, m);
   return test1(n);
 }
-},{"./smallPrimes":"prime/scripts/smallPrimes.ts"}],"prime/index.ts":[function(require,module,exports) {
+},{"./smallPrimes":"prime/scripts/smallPrimes.ts"}],"prime/scripts/expMod.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function expMod(base, exp, mod) {
+  if (exp === 1) return base % mod;
+  var bs = exp.toString(2).split('').map(function (b) {
+    return +b;
+  });
+  var mods = new Array(bs.length);
+  mods[0] = base;
+  bs.forEach(function (b, i) {
+    if (i === 0) return;
+    var t = Math.pow(mods[i - 1], 2) % mod;
+    mods[i] = b === 1 ? t * base % mod : t;
+  });
+  return mods[mods.length - 1];
+}
+
+exports.expMod = expMod;
+},{}],"prime/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -280,16 +304,22 @@ require("./index.scss");
 
 var genPrime_1 = __importDefault(require("./scripts/genPrime"));
 
-printHello();
-gen();
+var expMod_1 = require("./scripts/expMod");
+
+printHello(); //gen();
+
+mod();
+window.mod = expMod_1.expMod;
 
 function gen() {
   var n = genPrime_1.default();
   console.log(n);
 }
 
+function mod() {}
+
 function printHello() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -317,7 +347,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44487" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32949" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
