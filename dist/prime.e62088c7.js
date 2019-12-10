@@ -318,6 +318,7 @@ function check(n) {
   }) && rabinMillersCheck_1.default(n);
 }
 },{"./smallPrimes":"prime/scripts/smallPrimes.ts","./rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"prime/index.ts":[function(require,module,exports) {
+
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -336,32 +337,26 @@ require("./index.scss");
 
 var genPrime_1 = __importDefault(require("./scripts/genPrime"));
 
-var expMod_1 = __importDefault(require("./scripts/expMod"));
+var global = window;
+printHello();
 
-var rabinMillersCheck_1 = __importDefault(require("./scripts/rabinMillersCheck"));
+global.getPrime = function () {
+  var args = [];
 
-var smallPrimes_1 = __importDefault(require("./scripts/smallPrimes"));
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
 
-printHello(); //gen();
-
-mod();
-window.mod = expMod_1.default;
-window.rabinMillersCheck = rabinMillersCheck_1.default;
-window.primes = smallPrimes_1.default;
-window.gen; //smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
-
-function gen() {
-  var n = genPrime_1.default();
-  console.log(n);
-}
-
-function mod() {}
+  var prime = genPrime_1.default.apply(void 0, args);
+  console.log("%c" + prime, 'color: green');
+};
 
 function printHello() {
   console.log('%cSoftware Security', 'color: red; font-size: 28px');
-  console.log('%cPrime numbers generations & Exponential modulo', 'color: red; font-size: 20px');
+  console.log('%cPrime numbers \bgenerations & Exponential modulo', 'color: red; font-size: 20px');
+  console.log("%cAvailable commands:\n      > genPrime(size) - generate random size-bits prime number\n      > expMod(base, exp, n) - find the exponential modulo (base^exp mod n)\n   ".replace(/\n\s+/g, '\n'), 'font-size: 16px');
 }
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts","./scripts/smallPrimes":"prime/scripts/smallPrimes.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

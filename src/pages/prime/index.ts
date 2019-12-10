@@ -5,29 +5,23 @@ import expMod from './scripts/expMod';
 import rabinMillersCheck from './scripts/rabinMillersCheck';
 import smallPrimes from './scripts/smallPrimes';
 
+const global = <any>window;
+
 printHello();
-//gen();
-mod();
 
-window.mod = expMod;
-window.rabinMillersCheck = rabinMillersCheck;
-window.primes = smallPrimes;
-window.gen
-
-//smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
-
-function gen() {
-   const n = genPrime();
-
-   console.log(n);
-   
+global.getPrime = (...args) => { 
+   const prime = genPrime(...args);
+   console.log(`%c${prime}`, 'color: green');
 }
 
-function mod() {
 
-}
 
 function printHello() {
    console.log('%cSoftware Security', 'color: red; font-size: 28px');
-   console.log('%cPrime numbers generations & Exponential modulo', 'color: red; font-size: 20px');
+   console.log('%cPrime numbers \bgenerations & Exponential modulo', 'color: red; font-size: 20px');
+
+   console.log(`%cAvailable commands:
+      > genPrime(size) - generate random size-bits prime number
+      > expMod(base, exp, n) - find the exponential modulo (base^exp mod n)
+   `.replace(/\n\s+/g, '\n'), 'font-size: 16px');
 }
