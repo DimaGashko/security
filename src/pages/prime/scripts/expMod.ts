@@ -1,6 +1,6 @@
 
-export function expMod(base: number, exp: number, mod: number) {
-   if (exp === 1) return base % mod;
+export default function expMod(base: number, exp: number, mod: number) {
+   if (exp === 1) return base % mod; 
 
    const bs = exp.toString(2).split('').map(b => +b);
    const mods = new Array(bs.length);

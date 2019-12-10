@@ -1,4 +1,5 @@
-import { smallPrimes } from "./smallPrimes";
+import smallPrimes from "./smallPrimes";
+import rabinMillersCheck from "./rabinMillersCheck";
 
 export default function genPrime(size = 16) {
    let strN = new Array(size - 2).fill('')
@@ -14,31 +15,10 @@ export default function genPrime(size = 16) {
    return n;
 }
 
-function test1(n: number): boolean { 
+function test1(n: number): boolean {
    return smallPrimes.some(p => n % p === 0);
 }
 
 function test2(n: number): boolean {
    return [1, 2, 3].some(() => rabinMillersCheck(n));
 }
-
-function rabinMillersCheck(n): boolean {
-   let k = 0, m = n - 1, prevK, prevM;
-
-   while (m === (m ^ 0)) {
-      prevK = k;
-      prevM = m;
-      
-      k++;
-      m = m / (2 ** k);
-   }
-
-   k = prevK;
-   m = prevM;
-
-   let a = 2;
-
-   console.log(n, k, m);
-
-   return test1(n);
-}  

@@ -201,15 +201,90 @@ module.hot.accept(reloadCSS);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.smallPrimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621, 1627, 1637, 1657, 1663, 1667, 1669, 1693, 1697, 1699, 1709, 1721, 1723, 1733, 1741, 1747, 1753, 1759, 1777, 1783, 1787, 1789, 1801, 1811, 1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987, 1993, 1997, 1999];
-},{}],"prime/scripts/genPrime.ts":[function(require,module,exports) {
+exports.default = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621, 1627, 1637, 1657, 1663, 1667, 1669, 1693, 1697, 1699, 1709, 1721, 1723, 1733, 1741, 1747, 1753, 1759, 1777, 1783, 1787, 1789, 1801, 1811, 1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987, 1993, 1997, 1999];
+},{}],"prime/scripts/expMod.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var smallPrimes_1 = require("./smallPrimes");
+function expMod(base, exp, mod) {
+  if (exp === 1) return base % mod;
+  var bs = exp.toString(2).split('').map(function (b) {
+    return +b;
+  });
+  var mods = new Array(bs.length);
+  mods[0] = base;
+  bs.forEach(function (b, i) {
+    if (i === 0) return;
+    var t = Math.pow(mods[i - 1], 2) % mod;
+    mods[i] = b === 1 ? t * base % mod : t;
+  });
+  return mods[mods.length - 1];
+}
+
+exports.default = expMod;
+},{}],"prime/scripts/rabinMillersCheck.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var expMod_1 = __importDefault(require("./expMod"));
+/**
+ * Miller-Rabin Primality Test
+ * @returns true if n is **probably** prime and
+ *    false if n is definitely not prime
+ */
+
+
+function rabinMillersCheck(n) {
+  var a = 2;
+  var k = 1;
+
+  while ((n - 1) % Math.pow(2, k) === 0) {
+    k++;
+  }
+
+  var m = (n - 1) / Math.pow(2, --k);
+  var b = expMod_1.default(a, m, n);
+
+  if (b === 1 || b === n - 1) {
+    return true;
+  }
+
+  while (true) {
+    b = b * b % n;
+    if (b === 1) return false;
+    if (b === n - 1) return true;
+  }
+}
+
+exports.default = rabinMillersCheck;
+},{"./expMod":"prime/scripts/expMod.ts"}],"prime/scripts/genPrime.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var smallPrimes_1 = __importDefault(require("./smallPrimes"));
+
+var rabinMillersCheck_1 = __importDefault(require("./rabinMillersCheck"));
 
 function genPrime(size) {
   if (size === void 0) {
@@ -232,60 +307,17 @@ function genPrime(size) {
 exports.default = genPrime;
 
 function test1(n) {
-  return smallPrimes_1.smallPrimes.some(function (p) {
+  return smallPrimes_1.default.some(function (p) {
     return n % p === 0;
   });
 }
 
 function test2(n) {
   return [1, 2, 3].some(function () {
-    return rabinMillersCheck(n);
+    return rabinMillersCheck_1.default(n);
   });
 }
-
-function rabinMillersCheck(n) {
-  var k = 0,
-      m = n - 1,
-      prevK,
-      prevM;
-
-  while (m === (m ^ 0)) {
-    prevK = k;
-    prevM = m;
-    k++;
-    m = m / Math.pow(2, k);
-  }
-
-  k = prevK;
-  m = prevM;
-  var a = 2;
-  console.log(n, k, m);
-  return test1(n);
-}
-},{"./smallPrimes":"prime/scripts/smallPrimes.ts"}],"prime/scripts/expMod.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function expMod(base, exp, mod) {
-  if (exp === 1) return base % mod;
-  var bs = exp.toString(2).split('').map(function (b) {
-    return +b;
-  });
-  var mods = new Array(bs.length);
-  mods[0] = base;
-  bs.forEach(function (b, i) {
-    if (i === 0) return;
-    var t = Math.pow(mods[i - 1], 2) % mod;
-    mods[i] = b === 1 ? t * base % mod : t;
-  });
-  return mods[mods.length - 1];
-}
-
-exports.expMod = expMod;
-},{}],"prime/index.ts":[function(require,module,exports) {
+},{"./smallPrimes":"prime/scripts/smallPrimes.ts","./rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"prime/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -304,12 +336,15 @@ require("./index.scss");
 
 var genPrime_1 = __importDefault(require("./scripts/genPrime"));
 
-var expMod_1 = require("./scripts/expMod");
+var expMod_1 = __importDefault(require("./scripts/expMod"));
+
+var rabinMillersCheck_1 = __importDefault(require("./scripts/rabinMillersCheck"));
 
 printHello(); //gen();
 
 mod();
-window.mod = expMod_1.expMod;
+window.mod = expMod_1.default;
+window.rabinMillersCheck = rabinMillersCheck_1.default;
 
 function gen() {
   var n = genPrime_1.default();
@@ -319,7 +354,7 @@ function gen() {
 function mod() {}
 
 function printHello() {}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
