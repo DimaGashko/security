@@ -5,7 +5,7 @@
    "sideEffects": false,
    "scripts": {
       "start": "parcel src/pages/**/index.pug",
-      "build": "parcel build src/pages/**/index.pug --public-url ../"
+      "build": "parcel build src/pages/**/index.pug --out-dir docs --public-url ../"
    },
    "dependencies": {
       "lodash": "^4.17.15",
