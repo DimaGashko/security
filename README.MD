@@ -7,6 +7,7 @@ Check it out:
 - [Keyboard Handwriting](https://dimagashko.github.io/security/keyboard-handwriting)
 - [Playfair Cipher](https://dimagashko.github.io/security/playfair)
 - [Hill Cipher](https://dimagashko.github.io/security/hill)
+- [Primes & Modulo](https://dimagashko.github.io/security/prime)
 
 Also there's *frequency character counter* in a separate repo:
 
@@ -55,7 +56,6 @@ yarn build
 ![Screenshot](./screenshots/playfair/17.png)
 ![Screenshot](./screenshots/playfair/18.png)
 ![Screenshot](./screenshots/playfair/19.png)
-
 
 ### Keyboard Handwriting
 
