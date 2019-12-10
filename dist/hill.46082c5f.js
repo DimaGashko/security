@@ -1403,16 +1403,17 @@ var $key = $app.querySelector('.key');
 var $msg = $app.querySelector('.msg');
 var $encodeMsg = $app.querySelector('.encoded-msg');
 var $decodeMsg = $app.querySelector('.decoded-msg');
-var $preparedKey = $app.querySelector('.prepared-key');
+var $charKey = $app.querySelector('.char-key');
+var $numKey = $app.querySelector('.num-key');
 var INPUT_DELAY = 200;
 run();
-updatePreparedKey();
+updateCharKeyNumKey();
 initEvents();
 
 function initEvents() {
   $key.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, function () {
     run();
-    updatePreparedKey();
+    updateCharKeyNumKey();
   }));
   $msg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
   $encodeMsg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
@@ -1428,20 +1429,20 @@ function run() {
   $decodeMsg.value = decodedMsg;
 }
 
-function updatePreparedKey() {
+function updateCharKeyNumKey() {
   var key = $key.value.trim();
   var size = Math.sqrt(key.length) ^ 0;
   var charKey = chunk_1.default(key.slice(0, size * size).split(''), size);
   var numKey = chunk_1.default(key.slice(0, size * size).split('').map(function (ch) {
     return ch.codePointAt(0);
   }), size);
-  console.log(keyToString(charKey));
-  console.log(keyToString(numKey));
+  $charKey.value = keyToString(charKey);
+  $numKey.value = keyToString(numKey);
 }
 
 function keyToString(key) {
   return key.map(function (r) {
-    return r.join(' ');
+    return r.join('\t');
   }).join('\n');
 }
 },{"lodash/chunk":"../../node_modules/lodash/chunk.js","normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","throttle-debounce":"../../node_modules/throttle-debounce/dist/index.esm.js","./scripts/hill":"hill/scripts/hill.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

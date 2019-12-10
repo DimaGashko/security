@@ -10,18 +10,19 @@ const $key: HTMLInputElement = $app.querySelector('.key');
 const $msg: HTMLTextAreaElement = $app.querySelector('.msg');
 const $encodeMsg: HTMLTextAreaElement = $app.querySelector('.encoded-msg');
 const $decodeMsg: HTMLTextAreaElement = $app.querySelector('.decoded-msg');
-const $preparedKey: HTMLTextAreaElement = $app.querySelector('.prepared-key');
+const $charKey: HTMLTextAreaElement = $app.querySelector('.char-key');
+const $numKey: HTMLTextAreaElement = $app.querySelector('.num-key');
 
 const INPUT_DELAY = 200;
 
 run();
-updatePreparedKey();
+updateCharKeyNumKey();
 initEvents();
 
 function initEvents() {
    $key.addEventListener('input', debounce(INPUT_DELAY, () => {
       run();
-      updatePreparedKey();
+      updateCharKeyNumKey();
    }));
 
    $msg.addEventListener('input', debounce(INPUT_DELAY, run));
@@ -39,18 +40,17 @@ function run() {
    $decodeMsg.value = decodedMsg;
 }
 
-function updatePreparedKey() {
+function updateCharKeyNumKey() {
    const key = $key.value.trim();
    const size = Math.sqrt(key.length) ^ 0;
    const charKey = chunk(key.slice(0, size * size).split(''), size);
    const numKey = chunk(key.slice(0, size * size).split('')
       .map(ch => ch.codePointAt(0)), size);
 
-   console.log(keyToString(charKey));
-   console.log(keyToString(numKey));
-   
+   $charKey.value = keyToString(charKey);
+   $numKey.value = keyToString(numKey);
 }
 
 function keyToString(key: any[][]) {
-   return key.map(r => r.join(' ')).join('\n');
+   return key.map(r => r.join('\t')).join('\n');
 }
