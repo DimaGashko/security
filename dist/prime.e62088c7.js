@@ -221,17 +221,31 @@ function genPrime(size) {
   }).join('');
   var n = parseInt("1" + strN + "1", 2);
 
-  if (smallPrimes_1.smallPrimes.some(function (p) {
-    return n % p === 0;
-  })) {
-    console.log('Nope!');
-    return genPrime(size);
+  while (!test1(n) && !test2(n)) {
+    console.log(n, 'Nope!');
+    n += 2;
   }
 
   return n;
 }
 
 exports.default = genPrime;
+
+function test1(n) {
+  return smallPrimes_1.smallPrimes.some(function (p) {
+    return n % p === 0;
+  });
+}
+
+function test2(n) {
+  return [1, 2, 3].some(function () {
+    return rabinMillerCheck(n);
+  });
+}
+
+function rabinMillerCheck(n) {
+  return test1(n);
+}
 },{"./smallPrimes":"prime/scripts/smallPrimes.ts"}],"prime/index.ts":[function(require,module,exports) {
 "use strict";
 
