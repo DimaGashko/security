@@ -54,7 +54,8 @@ export function modInv(a: number, m: number) {
    for (let x = 1; x < m; x++) {
       if ((a * x) % m == 1) return x;
    }
-
+   console.log(a, m);
+   
    throw "There is no modular multiplicative inverse for the integer";
 }
 

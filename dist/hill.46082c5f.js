@@ -339,6 +339,110 @@ function throttle(delay, noTrailing, callback, debounceMode) {
 function debounce(delay, atBegin, callback) {
   return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false);
 }
+},{}],"hill/scripts/math.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function modInvMat(m, mod) {
+  var d = Math.round(det(m));
+  var invDet = modInv(modBy(d, mod), mod);
+  return adjoint(m).map(function (r) {
+    return r.map(function (a) {
+      return Math.round(modBy(a * invDet, mod));
+    });
+  });
+}
+
+exports.modInvMat = modInvMat;
+
+function det(m) {
+  if (m.length === 2) {
+    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+  }
+
+  return m.map(function (n, i) {
+    return n[0] * Math.pow(-1, i) * minor(m, i, 0);
+  }).reduce(function (sum, n) {
+    return sum + n;
+  }, 0);
+}
+
+exports.det = det;
+
+function matMulVec(m, v) {
+  if (m.length && m[0].length !== v.length) {
+    throw 'The matrix and the vector are inconsistent';
+  }
+
+  return m.map(function (r) {
+    return v.reduce(function (sum, b, j) {
+      return sum + r[j] * b;
+    }, 0);
+  });
+}
+
+exports.matMulVec = matMulVec;
+
+function adjoint(m) {
+  return transpose(m.map(function (r, i) {
+    return r.map(function (_, j) {
+      return confractor(m, i, j);
+    });
+  }));
+}
+
+exports.adjoint = adjoint;
+
+function confractor(m, i, j) {
+  return Math.pow(-1, i + j) * minor(m, i, j);
+}
+
+exports.confractor = confractor;
+
+function minor(m, i, j) {
+  var filtered = m.filter(function (_, k) {
+    return k !== i;
+  }).map(function (r) {
+    return r.filter(function (_, k) {
+      return k !== j;
+    });
+  });
+  return det(filtered);
+}
+
+exports.minor = minor;
+
+function transpose(matrix) {
+  return matrix.map(function (r, i) {
+    return r.map(function (v, j) {
+      return matrix[j][i];
+    });
+  });
+}
+
+exports.transpose = transpose;
+
+function modInv(a, m) {
+  a = a % m;
+
+  for (var x = 1; x < m; x++) {
+    if (a * x % m == 1) return x;
+  }
+
+  console.log(a, m);
+  throw "There is no modular multiplicative inverse for the integer";
+}
+
+exports.modInv = modInv;
+
+function modBy(v, m) {
+  return v < 0 ? m - -v % m : v % m;
+}
+
+exports.modBy = modBy;
 },{}],"../../node_modules/lodash/_baseSlice.js":[function(require,module,exports) {
 /**
  * The base implementation of `_.slice` without an iteratee call guard.
@@ -1006,110 +1110,7 @@ function chunk(array, size, guard) {
 
 module.exports = chunk;
 
-},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"hill/scripts/math.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function modInvMat(m, mod) {
-  var d = Math.round(det(m));
-  var invDet = modInv(modBy(d, mod), mod);
-  return adjoint(m).map(function (r) {
-    return r.map(function (a) {
-      return Math.round(modBy(a * invDet, mod));
-    });
-  });
-}
-
-exports.modInvMat = modInvMat;
-
-function det(m) {
-  if (m.length === 2) {
-    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
-  }
-
-  return m.map(function (n, i) {
-    return n[0] * Math.pow(-1, i) * minor(m, i, 0);
-  }).reduce(function (sum, n) {
-    return sum + n;
-  }, 0);
-}
-
-exports.det = det;
-
-function matMulVec(m, v) {
-  if (m.length && m[0].length !== v.length) {
-    throw 'The matrix and the vector are inconsistent';
-  }
-
-  return m.map(function (r) {
-    return v.reduce(function (sum, b, j) {
-      return sum + r[j] * b;
-    }, 0);
-  });
-}
-
-exports.matMulVec = matMulVec;
-
-function adjoint(m) {
-  return transpose(m.map(function (r, i) {
-    return r.map(function (_, j) {
-      return confractor(m, i, j);
-    });
-  }));
-}
-
-exports.adjoint = adjoint;
-
-function confractor(m, i, j) {
-  return Math.pow(-1, i + j) * minor(m, i, j);
-}
-
-exports.confractor = confractor;
-
-function minor(m, i, j) {
-  var filtered = m.filter(function (_, k) {
-    return k !== i;
-  }).map(function (r) {
-    return r.filter(function (_, k) {
-      return k !== j;
-    });
-  });
-  return det(filtered);
-}
-
-exports.minor = minor;
-
-function transpose(matrix) {
-  return matrix.map(function (r, i) {
-    return r.map(function (v, j) {
-      return matrix[j][i];
-    });
-  });
-}
-
-exports.transpose = transpose;
-
-function modInv(a, m) {
-  a = a % m;
-
-  for (var x = 1; x < m; x++) {
-    if (a * x % m == 1) return x;
-  }
-
-  throw "There is no modular multiplicative inverse for the integer";
-}
-
-exports.modInv = modInv;
-
-function modBy(v, m) {
-  return v < 0 ? m - -v % m : v % m;
-}
-
-exports.modBy = modBy;
-},{}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+},{"./_baseSlice":"../../node_modules/lodash/_baseSlice.js","./_isIterateeCall":"../../node_modules/lodash/_isIterateeCall.js","./toInteger":"../../node_modules/lodash/toInteger.js"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -1387,53 +1388,48 @@ require("./index.scss");
 
 var throttle_debounce_1 = require("throttle-debounce");
 
+var math_1 = require("./scripts/math");
+
 var hill_1 = require("./scripts/hill");
 
+window.hillEncode = hill_1.encode;
+window.hillDecode = hill_1.decode;
+window.mulV = math_1.matMulVec;
+window.inv = math_1.modInvMat;
+window.det = math_1.det;
+var key = 'do_you_love_code_so_much?';
+var msg = "Harry Potter and the Philosophers Stone\n\nChapter 1 The Boy Who Lived\n\nMr. and Mrs. Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.\n\nMr. Dursley was the director of a firm called Grunnings, which made drills. He was a big, beefy man with hardly any neck, although he did have a very large mustache. Mrs. Dursley was thin and blonde and had nearly twice the usual amount of neck, which came in very useful as she spent so much of her time craning over garden fences, spying on the neighbors. The Dursleys had a small son called Dudley and in their opinion there was no finer boy anywhere.\n\nThe Dursleys had everything they wanted, but they also had a secret, and their greatest fear was that somebody would discover it. They didn't think they could bear it if anyone found out about the Potters. Mrs. Potter was Mrs. Dursley's sister, but they hadn't met for several years; in fact, Mrs. Dursley pretended she didn't have a sister, because her sister and her good-for-nothing husband were as unDursleyish as it was possible to be. The Dursleys shuddered to think what the neighbors would say if the Potters arrived in the street. The Dursleys knew that the Potters had a small son, too, but they had never even seen him. This boy was another good reason for keeping the Potters away; they didn't want Dudley mixing with a child like that.\n\nType your text here...";
+msg = 'Some secret message!';
+var encoded = hill_1.encode(msg, key); // console.log(msg);
+// console.log(encoded);
+// console.log('-------');
+// console.log(decode(encoded, 'do_you_love_code_so_much?'));
+
 var $app = document.querySelector('.app');
-var $encodeKey = $app.querySelector('.encode-key');
-var $encodeMsg = $app.querySelector('.encode-msg');
-var $encodeRes = $app.querySelector('.encode-res');
-var $decodeKey = $app.querySelector('.decode-key');
-var $decodeMsg = $app.querySelector('.decode-msg');
-var $decodeRes = $app.querySelector('.decode-res');
-var INPUT_DELAY = 500;
-runEncode();
-runDecode();
+var $key = $app.querySelector('.key');
+var $msg = $app.querySelector('.msg');
+var $encodeMsg = $app.querySelector('.encoded-msg');
+var $decodeMsg = $app.querySelector('.decoded-msg');
+var INPUT_DELAY = 200;
+run();
 initEvents();
 
 function initEvents() {
-  $encodeKey.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runEncode));
-  $encodeMsg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runEncode));
-  $encodeRes.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runEncode));
-  $decodeKey.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runDecode));
-  $decodeMsg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runDecode));
-  $decodeRes.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, runDecode));
+  $key.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
+  $msg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
+  $encodeMsg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
+  $decodeMsg.addEventListener('input', throttle_debounce_1.debounce(INPUT_DELAY, run));
 }
 
-function runEncode() {
-  var key = $encodeKey.value;
-  var msg = $encodeMsg.value;
-
-  try {
-    $encodeRes.value = hill_1.encode(msg, key);
-  } catch (e) {
-    console.error(e);
-    alert('Try another key');
-  }
+function run() {
+  var key = $key.value.trim();
+  var msg = $msg.value.trim();
+  var encodedMsg = hill_1.encode(msg, key);
+  var decodedMsg = hill_1.decode(encodedMsg, key);
+  $encodeMsg.value = encodedMsg;
+  $decodeMsg.value = decodedMsg;
 }
-
-function runDecode() {
-  var key = $decodeKey.value;
-  var msg = $decodeMsg.value;
-
-  try {
-    $decodeRes.value = hill_1.decode(msg, key);
-  } catch (e) {
-    console.error(e);
-    alert('Try another key');
-  }
-}
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","throttle-debounce":"../../node_modules/throttle-debounce/dist/index.esm.js","./scripts/hill":"hill/scripts/hill.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"hill/index.scss","throttle-debounce":"../../node_modules/throttle-debounce/dist/index.esm.js","./scripts/math":"hill/scripts/math.ts","./scripts/hill":"hill/scripts/hill.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
