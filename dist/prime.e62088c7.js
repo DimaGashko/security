@@ -239,11 +239,26 @@ function test1(n) {
 
 function test2(n) {
   return [1, 2, 3].some(function () {
-    return rabinMillerCheck(n);
+    return rabinMillersCheck(n);
   });
 }
 
-function rabinMillerCheck(n) {
+function rabinMillersCheck(n) {
+  var k = 0,
+      m = n - 1,
+      prevK,
+      prevM;
+
+  while (m === (m ^ 0)) {
+    prevK = k;
+    prevM = m;
+    k++;
+    m = m / Math.pow(2, k);
+  }
+
+  k = prevK;
+  m = prevM;
+  console.log(n, k, m);
   return test1(n);
 }
 },{"./smallPrimes":"prime/scripts/smallPrimes.ts"}],"prime/index.ts":[function(require,module,exports) {

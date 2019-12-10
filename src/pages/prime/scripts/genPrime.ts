@@ -19,9 +19,24 @@ function test1(n: number): boolean {
 }
 
 function test2(n: number): boolean {
-   return [1, 2, 3].some(() => rabinMillerCheck(n));
+   return [1, 2, 3].some(() => rabinMillersCheck(n));
 }
 
-function rabinMillerCheck(n): boolean {
+function rabinMillersCheck(n): boolean {
+   let k = 0, m = n - 1, prevK, prevM;
+
+   while (m === (m ^ 0)) {
+      prevK = k;
+      prevM = m;
+      
+      k++;
+      m = m / (2 ** k);
+   }
+
+   k = prevK;
+   m = prevM;
+
+   console.log(n, k, m);
+
    return test1(n);
-}
+}  
