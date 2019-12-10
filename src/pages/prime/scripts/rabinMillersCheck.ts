@@ -2,7 +2,7 @@ import expMod from "./expMod";
 
 /**
  * Miller-Rabin Primality Test
- * @
+ * 
  * @returns true if n is **probably** prime and 
  *    false if n is definitely not prime
  */

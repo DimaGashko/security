@@ -241,7 +241,7 @@ Object.defineProperty(exports, "__esModule", {
 var expMod_1 = __importDefault(require("./expMod"));
 /**
  * Miller-Rabin Primality Test
- * @
+ *
  * @returns true if n is **probably** prime and
  *    false if n is definitely not prime
  */
@@ -302,7 +302,7 @@ function genPrime(size) {
   }).join('');
   var n = parseInt("1" + strN + "1", 2);
 
-  while (!test1(n) && !test2(n)) {
+  while (check(n)) {
     console.log(n, 'Nope!');
     n += 2;
   }
@@ -312,16 +312,10 @@ function genPrime(size) {
 
 exports.default = genPrime;
 
-function test1(n) {
+function check(n) {
   return smallPrimes_1.default.some(function (p) {
     return n % p === 0;
-  });
-}
-
-function test2(n) {
-  return [1, 2, 3].some(function () {
-    return rabinMillersCheck_1.default(n);
-  });
+  }) && rabinMillersCheck_1.default(n);
 }
 },{"./smallPrimes":"prime/scripts/smallPrimes.ts","./rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"prime/index.ts":[function(require,module,exports) {
 "use strict";
@@ -353,7 +347,8 @@ printHello(); //gen();
 mod();
 window.mod = expMod_1.default;
 window.rabinMillersCheck = rabinMillersCheck_1.default;
-window.primes = smallPrimes_1.default; //smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
+window.primes = smallPrimes_1.default;
+window.gen; //smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
 
 function gen() {
   var n = genPrime_1.default();
@@ -362,7 +357,10 @@ function gen() {
 
 function mod() {}
 
-function printHello() {}
+function printHello() {
+  console.log('%cSoftware Security', 'color: red; font-size: 28px');
+  console.log('%cPrime numbers generations & Exponential modulo', 'color: red; font-size: 20px');
+}
 },{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts","./scripts/smallPrimes":"prime/scripts/smallPrimes.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

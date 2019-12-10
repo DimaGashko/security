@@ -12,6 +12,7 @@ mod();
 window.mod = expMod;
 window.rabinMillersCheck = rabinMillersCheck;
 window.primes = smallPrimes;
+window.gen
 
 //smallPrimes.filter(p => p > 100).forEach(p => rabinMillersCheck(p));
 
@@ -27,5 +28,6 @@ function mod() {
 }
 
 function printHello() {
-   
+   console.log('%cSoftware Security', 'color: red; font-size: 28px');
+   console.log('%cPrime numbers generations & Exponential modulo', 'color: red; font-size: 20px');
 }

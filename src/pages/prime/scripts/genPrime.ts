@@ -7,7 +7,7 @@ export default function genPrime(size = 16) {
 
    let n = parseInt(`1${strN}1`, 2);
 
-   while (!test1(n) && !test2(n)) {
+   while (check(n)) {
       console.log(n, 'Nope!');
       n += 2;
    }
@@ -15,10 +15,7 @@ export default function genPrime(size = 16) {
    return n;
 }
 
-function test1(n: number): boolean {
-   return smallPrimes.some(p => n % p === 0);
-}
-
-function test2(n: number): boolean {
-   return [1, 2, 3].some(() => rabinMillersCheck(n));
+function check(n: number): boolean {
+   return smallPrimes.some(p => n % p === 0) &&
+      rabinMillersCheck(n);
 }
