@@ -7,8 +7,7 @@ export default function genPrime(size = 16) {
 
    let n = parseInt(`1${strN}1`, 2);
 
-   while (check(n)) {
-      console.log(n, 'Nope!');
+   while (!check(n)) {
       n += 2;
    }
 

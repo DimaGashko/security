@@ -302,8 +302,7 @@ function genPrime(size) {
   }).join('');
   var n = parseInt("1" + strN + "1", 2);
 
-  while (check(n)) {
-    console.log(n, 'Nope!');
+  while (!check(n)) {
     n += 2;
   }
 
@@ -337,26 +336,22 @@ require("./index.scss");
 
 var genPrime_1 = __importDefault(require("./scripts/genPrime"));
 
+var expMod_1 = __importDefault(require("./scripts/expMod"));
+
+var rabinMillersCheck_1 = __importDefault(require("./scripts/rabinMillersCheck"));
+
 var global = window;
 printHello();
-
-global.getPrime = function () {
-  var args = [];
-
-  for (var _i = 0; _i < arguments.length; _i++) {
-    args[_i] = arguments[_i];
-  }
-
-  var prime = genPrime_1.default.apply(void 0, args);
-  console.log("%c" + prime, 'color: green');
-};
+global.genPrime = genPrime_1.default;
+global.checkPrime = rabinMillersCheck_1.default;
+global.expMod = expMod_1.default;
 
 function printHello() {
   console.log('%cSoftware Security', 'color: red; font-size: 28px');
-  console.log('%cPrime numbers \bgenerations & Exponential modulo', 'color: red; font-size: 20px');
-  console.log("%cAvailable commands:\n      > genPrime(size) - generate random size-bits prime number\n      > expMod(base, exp, n) - find the exponential modulo (base^exp mod n)\n   ".replace(/\n\s+/g, '\n'), 'font-size: 16px');
+  console.log('%cPrime numbers generation & Exponential modulo', 'color: red; font-size: 20px');
+  console.log("%cAvailable commands:\n      > genPrime(size) - generate random size-bits prime number\n      > checkPrime(n) - check if n is prime (Miller-Rabin primality test)\n      > expMod(base, exp, n) - find the exponential modulo (base^exp mod n)\n   ".replace(/\n\s+/g, '\n'), 'font-size: 16px');
 }
-},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"normalize.scss/normalize.scss":"../../node_modules/normalize.scss/normalize.scss","./index.scss":"prime/index.scss","./scripts/genPrime":"prime/scripts/genPrime.ts","./scripts/expMod":"prime/scripts/expMod.ts","./scripts/rabinMillersCheck":"prime/scripts/rabinMillersCheck.ts"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

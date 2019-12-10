@@ -64,3 +64,7 @@ yarn build
 ![Screenshot](./screenshots/keyboard-handwriting/3.png)
 ![Screenshot](./screenshots/keyboard-handwriting/4.png)
 ![Screenshot](./screenshots/keyboard-handwriting/5.png)
+
+### Prime Numbers
+
+![Screenshot](./screenshots/prime/1.png)
