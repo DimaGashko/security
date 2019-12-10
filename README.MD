@@ -30,13 +30,9 @@ yarn build
 
 ## Some screenshots
 
-### Keyboard Handwriting
+### Hill Cipher
 
-![Screenshot](./screenshots/keyboard-handwriting/1.png)
-![Screenshot](./screenshots/keyboard-handwriting/2.png)
-![Screenshot](./screenshots/keyboard-handwriting/3.png)
-![Screenshot](./screenshots/keyboard-handwriting/4.png)
-![Screenshot](./screenshots/keyboard-handwriting/5.png)
+![Screenshot](./screenshots/hill/1.png)
 
 ### Playfair Cipher
 
@@ -59,3 +55,12 @@ yarn build
 ![Screenshot](./screenshots/playfair/17.png)
 ![Screenshot](./screenshots/playfair/18.png)
 ![Screenshot](./screenshots/playfair/19.png)
+
+
+### Keyboard Handwriting
+
+![Screenshot](./screenshots/keyboard-handwriting/1.png)
+![Screenshot](./screenshots/keyboard-handwriting/2.png)
+![Screenshot](./screenshots/keyboard-handwriting/3.png)
+![Screenshot](./screenshots/keyboard-handwriting/4.png)
+![Screenshot](./screenshots/keyboard-handwriting/5.png)
