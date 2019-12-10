@@ -16,7 +16,7 @@ export default class PlayfairGrid {
    }
 
    public static createEnGrid(keyword: string) {
-      const alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
+      const alphabet = "abcdefghijklmnopqrstuvwxyz'.,_".split('');
       return new PlayfairGrid(keyword, alphabet, "'", 5);
    }
 
@@ -44,12 +44,12 @@ export default class PlayfairGrid {
 
    private processPair([a, b]: string[], mode: 'encode' | 'decode'): string[] {
       const shift = (mode === 'encode') ? 1 : -1;
-
+      
       if (b === a || !b) b = this._delimiter;
       const { i: ai, j: aj } = this._gridMap.get(a);
       const { i: bi, j: bj } = this._gridMap.get(b);
 
-      if (ai === bi) {
+      if (ai === bi) {     
          return this.getPair(ai, aj + shift, bi, bj + shift)
       }
 
@@ -61,7 +61,7 @@ export default class PlayfairGrid {
    }
 
    private getPair(ai: number, aj: number, bi: number, bj: number) {
-      return [this.get(ai, ai), this.get(bi, bj)];
+      return [this.get(ai, aj), this.get(bi, bj)];
    }
 
    private get(i: number, j: number): string {

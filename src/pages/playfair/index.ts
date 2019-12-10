@@ -5,7 +5,8 @@ import template from 'lodash/template';
 
 import PlayfairGrid from './scripts/algorithms/playfair/PlayfairGrid';
 import { encode, decode } from './scripts/algorithms/playfair';
-
+window.encode = encode;
+window.decode = decode;
 interface User {
    login: string;
    pwd: string;
@@ -31,6 +32,9 @@ const users: User[] = ('users' in localStorage) ?
    JSON.parse(localStorage.users) : []
 
 const userTemplate = template($userTmpl.innerHTML);
+
+window.grid = playfairGrid;
+window.urers = users;
 
 renderUsers();
 initEvents();

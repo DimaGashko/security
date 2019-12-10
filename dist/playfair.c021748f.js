@@ -2753,7 +2753,7 @@ function () {
   }
 
   PlayfairGrid.createEnGrid = function (keyword) {
-    var alphabet = "abcdefghijklmnopqrstuvwxyz'._".split('');
+    var alphabet = "abcdefghijklmnopqrstuvwxyz'.,_".split('');
     return new PlayfairGrid(keyword, alphabet, "'", 5);
   };
 
@@ -2809,7 +2809,7 @@ function () {
   };
 
   PlayfairGrid.prototype.getPair = function (ai, aj, bi, bj) {
-    return [this.get(ai, ai), this.get(bi, bj)];
+    return [this.get(ai, aj), this.get(bi, bj)];
   };
 
   PlayfairGrid.prototype.get = function (i, j) {
@@ -2904,6 +2904,8 @@ var PlayfairGrid_1 = __importDefault(require("./scripts/algorithms/playfair/Play
 
 var playfair_1 = require("./scripts/algorithms/playfair");
 
+window.encode = playfair_1.encode;
+window.decode = playfair_1.decode;
 var KEYWORD = 'cluster';
 var $app = document.querySelector('.app');
 var $auth = $app.querySelector('.actions__auth');
@@ -2917,6 +2919,8 @@ var $about = $addForm.about;
 var playfairGrid = PlayfairGrid_1.default.createEnGrid(KEYWORD);
 var users = 'users' in localStorage ? JSON.parse(localStorage.users) : [];
 var userTemplate = template_1.default($userTmpl.innerHTML);
+window.grid = playfairGrid;
+window.urers = users;
 renderUsers();
 initEvents();
 
@@ -3031,7 +3035,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43423" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35265" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
