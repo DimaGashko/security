@@ -1,0 +1,16 @@
+@import '../../styles/breakpoints';
+@import '../../styles/base';
+@import '../../styles/header';
+@import '../../styles/main';
+
+.app {
+   max-width: 960px;
+
+   margin: 0 auto;
+   padding: 1.5rem 5vw;
+   padding-bottom: 6rem;
+}
+
+.title {
+   font-size: 2rem;
+}
