@@ -115,13 +115,12 @@ function finishTesting() {
    const errorDiff = Math.abs(prev.error - cur.error);
 
    const speedDiffPercent = Math.min(+(speedDiff / prev.speed * 100).toFixed(2) || 0, 100);
-   const errorsDiffPercent = Math.min(+(errorDiff / prev.error * 100).toFixed(2) || 0, 100);
 
-   const pass = speedDiff <= speedEps && errorDiff <= errorEps;
+   const pass = speedDiff <= speedEps && errorDiff <= errorEps + 0.005;
 
    const msg = `Recorded speed: ${formatSpeed(prev.speed)} ch/min, errors: ${formatErrors(prev.error)}%\n` +
       `Current speed: ${formatSpeed(cur.speed)} ch/min, errors: ${formatErrors(cur.error)}%\n` +
-      `Speed diff: ${speedDiffPercent}%, Errors diff: ${errorsDiffPercent}%\n\n` +
+      `Speed diff: ${speedDiffPercent}%\n\n` +
       `${(pass) ? "Passed. You're Welcome!" : 'Failed!'}`;
    
    if (cur.speed > 2000) {
