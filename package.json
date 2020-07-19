@@ -8,7 +8,7 @@
       "build": "parcel build src/pages/**/index.pug --out-dir docs --public-url ../"
    },
    "dependencies": {
-      "lodash": "^4.17.15",
+      "lodash": "^4.17.19",
       "mathjs": "^6.2.5",
       "throttle-debounce": "^2.1.0"
    },
